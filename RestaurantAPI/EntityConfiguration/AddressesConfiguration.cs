@@ -12,6 +12,16 @@ namespace RestaurantAPI.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
+            builder.Property(a => a.City)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(a => a.Street)
+                .HasMaxLength(50);
+
+            builder.Property(a => a.PostalCode)
+                .IsRequired()
+                .HasMaxLength(7);
         }
     }
 }

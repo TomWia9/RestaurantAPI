@@ -12,7 +12,12 @@ namespace RestaurantAPI.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Dish> builder)
         {
+            builder.Property(d => d.Name)
+                .IsRequired()
+                .HasMaxLength(30);
+
             builder.Property(d => d.Price)
+                .IsRequired()
                 .HasColumnType("decimal(18,4)");
         }
     }

@@ -12,6 +12,29 @@ namespace RestaurantAPI.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Restaurant> builder)
         {
+            builder.Property(r => r.Name)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(r => r.Description)
+                .HasMaxLength(100);
+
+            builder.Property(r => r.Category)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(r => r.HasDelivery)
+                .IsRequired();
+
+            builder.Property(r => r.ContactEmail)
+                .IsRequired()
+                .HasMaxLength(40);
+
+            builder.Property(r => r.ContactNumber)
+                .IsRequired()
+                .HasMaxLength(16);
+
+            
         }
     }
 }
