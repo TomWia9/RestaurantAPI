@@ -17,7 +17,7 @@ namespace RestaurantAPI.EntityConfiguration
                 .HasMaxLength(30);
 
             builder.Property(r => r.Description)
-                .HasMaxLength(100);
+                .HasMaxLength(500);
 
             builder.Property(r => r.Category)
                 .IsRequired()
