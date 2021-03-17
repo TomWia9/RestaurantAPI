@@ -13,6 +13,6 @@ namespace RestaurantAPI.Repositories
         Task<Restaurant> GetAsync(int id);
         Task<bool> AddAsync(Restaurant restaurant);
         Task<bool> DeleteAsync(Restaurant restaurant);
-        void Update(Restaurant restaurant);
+        Task<bool> UpdateAsync(Restaurant restaurant);
     }
 }

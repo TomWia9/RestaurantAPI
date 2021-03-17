@@ -39,9 +39,9 @@ namespace RestaurantAPI.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(Restaurant restaurant)
+        public async Task<bool> UpdateAsync(Restaurant restaurant)
         {
-            //no code in this implementation
+            return await _context.SaveChangesAsync() > 0; 
         }
     }
 }
