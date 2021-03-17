@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
+using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
@@ -14,61 +17,86 @@ namespace RestaurantAPI.Controllers
     public class RestaurantsController : ControllerBase
     {
         private readonly RestaurantDbContext _context;
+        private readonly IRestaurantsRepository _restaurantsRepository;
+        private readonly IMapper _mapper;
 
-        public RestaurantsController(RestaurantDbContext context)
+        public RestaurantsController(RestaurantDbContext context, IRestaurantsRepository restaurantsRepository, IMapper mapper)
         {
             _context = context;
+            _restaurantsRepository = restaurantsRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
         {
-            return Ok(await _context.Restaurants.ToListAsync());
+            var restaurants = await _restaurantsRepository.GetAllAsync();
+
+            return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
         {
-            var restaurant = await _context.Restaurants.FindAsync(id);
+            var restaurant = await _restaurantsRepository.GetAsync(id);
 
             if (restaurant == null)
             {
                 return NotFound();
             }
 
-            return Ok(restaurant);
+            return Ok(_mapper.Map<RestaurantDto>(restaurant));
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutRestaurant(int id, Restaurant restaurant)
+        public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
         {
-            //not implemented yet
-            return NoContent();
+            var restaurantFromRepo = await _restaurantsRepository.GetAsync(id);
+
+            if (restaurantFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(restaurant, restaurantFromRepo);
+
+            if(await _restaurantsRepository.UpdateAsync(restaurantFromRepo))
+            {
+                return NoContent();
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<Restaurant>> PostRestaurant(Restaurant restaurant)
+        public async Task<ActionResult<Restaurant>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
-            _context.Restaurants.Add(restaurant);
+            var newRestaurant = _mapper.Map<Restaurant>(restaurant);
+            await _restaurantsRepository.AddAsync(newRestaurant);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRestaurant", new { id = restaurant.Id }, restaurant);
+            return CreatedAtAction("GetRestaurant", new { id = newRestaurant.Id }, _mapper.Map<RestaurantDto>(newRestaurant));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {
-            var restaurant = await _context.Restaurants.FindAsync(id);
+            var restaurant = await _restaurantsRepository.GetAsync(id);
+
             if (restaurant == null)
             {
                 return NotFound();
             }
 
-            _context.Restaurants.Remove(restaurant);
-            await _context.SaveChangesAsync();
+            if (await _restaurantsRepository.DeleteAsync(restaurant))
+            {
+                return NoContent();
+            }
 
-            return NoContent();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+
         }
     }
 }
