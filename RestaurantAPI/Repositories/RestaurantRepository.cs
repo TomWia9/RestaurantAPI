@@ -27,13 +27,13 @@ namespace RestaurantAPI.Repositories
             return await _context.Restaurants.FindAsync(id);
         }
 
-        public async Task<bool> Add(Restaurant restaurant)
+        public async Task<bool> AddAsync(Restaurant restaurant)
         {
            await _context.Restaurants.AddAsync(restaurant);
            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> Delete(Restaurant restaurant)
+        public async Task<bool> DeleteAsync(Restaurant restaurant)
         {
             _context.Restaurants.Remove(restaurant);
             return await _context.SaveChangesAsync() > 0;

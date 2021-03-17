@@ -11,8 +11,8 @@ namespace RestaurantAPI.Repositories
     {
         Task<IEnumerable<Restaurant>> GetAllAsync();
         Task<Restaurant> GetAsync(int id);
-        Task<bool> Add(Restaurant restaurant);
-        Task<bool> Delete(Restaurant restaurant);
+        Task<bool> AddAsync(Restaurant restaurant);
+        Task<bool> DeleteAsync(Restaurant restaurant);
         void Update(RestaurantForUpdateDto restaurant);
     }
 }
