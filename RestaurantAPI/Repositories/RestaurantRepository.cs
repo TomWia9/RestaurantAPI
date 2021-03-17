@@ -39,7 +39,7 @@ namespace RestaurantAPI.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(RestaurantForUpdateDto restaurant)
+        public void Update(Restaurant restaurant)
         {
             //no code in this implementation
         }
