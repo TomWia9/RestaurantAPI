@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Models;
+using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI
 {
@@ -28,9 +29,11 @@ namespace RestaurantAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<RestaurantSeeder>();
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+            services.AddAutoMapper(GetType().Assembly);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
