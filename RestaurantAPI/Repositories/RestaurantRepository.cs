@@ -19,12 +19,12 @@ namespace RestaurantAPI.Repositories
 
         public async Task<IEnumerable<Restaurant>> GetAllAsync()
         {
-            return await _context.Restaurants.ToListAsync();
+            return await _context.Restaurants.Include(r => r.Address).ToListAsync();
         }
 
         public async Task<Restaurant> GetAsync(int id)
         {
-            return await _context.Restaurants.FindAsync(id);
+            return await _context.Restaurants.Include(r => r.Address).FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<bool> AddAsync(Restaurant restaurant)

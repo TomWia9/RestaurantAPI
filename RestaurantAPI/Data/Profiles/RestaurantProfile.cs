@@ -12,7 +12,8 @@ namespace RestaurantAPI.Data.Profiles
     {
         public RestaurantProfile()
         {
-            CreateMap<AddressDto, Address>();
+            CreateMap<AddressDto, Address>()
+                .ForMember(a => a.Id, opt => opt.Ignore());
             CreateMap<Address, AddressDto>();
             CreateMap<Restaurant, RestaurantDto>();
             CreateMap<RestaurantForCreationDto, Restaurant>();
