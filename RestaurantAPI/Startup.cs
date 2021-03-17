@@ -33,6 +33,7 @@ namespace RestaurantAPI
             services.AddScoped<RestaurantSeeder>();
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+            services.AddAutoMapper(GetType().Assembly);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
