@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
@@ -31,9 +32,15 @@ namespace RestaurantAPI
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<RestaurantSeeder>();
+
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+
             services.AddAutoMapper(GetType().Assembly);
+            services.AddMvc().AddFluentValidation(options =>
+            {
+                options.ValidatorOptions.LanguageManager.Enabled = false;
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
