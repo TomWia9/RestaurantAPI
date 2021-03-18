@@ -34,7 +34,12 @@ namespace RestaurantAPI.EntityConfiguration
                 .IsRequired()
                 .HasMaxLength(16);
 
-            
+            builder.HasOne(r => r.Address)
+                .WithOne(a => a.Restaurant)
+                .HasForeignKey<Address>(a => a.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
         }
     }
 }
