@@ -11,10 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
+using RestaurantAPI.Shared.Validators;
 
 namespace RestaurantAPI
 {
@@ -32,6 +35,10 @@ namespace RestaurantAPI
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<RestaurantSeeder>();
+
+            services.AddTransient<IValidator<RestaurantForCreationDto>, RestaurantForCreationValidator>();
+            services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
+
 
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
