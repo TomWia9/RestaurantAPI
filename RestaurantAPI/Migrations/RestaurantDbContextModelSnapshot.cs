@@ -98,8 +98,8 @@ namespace RestaurantAPI.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("HasDelivery")
                         .HasColumnType("bit");

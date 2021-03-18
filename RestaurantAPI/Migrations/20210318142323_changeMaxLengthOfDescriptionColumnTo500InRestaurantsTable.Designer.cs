@@ -9,7 +9,7 @@ using RestaurantAPI.Models;
 namespace RestaurantAPI.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20210316151204_changeMaxLengthOfDescriptionColumnTo500InRestaurantsTable")]
+    [Migration("20210318142323_changeMaxLengthOfDescriptionColumnTo500InRestaurantsTable")]
     partial class changeMaxLengthOfDescriptionColumnTo500InRestaurantsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
