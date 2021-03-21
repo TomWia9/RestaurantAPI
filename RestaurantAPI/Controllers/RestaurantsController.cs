@@ -48,7 +48,7 @@ namespace RestaurantAPI.Controllers
             return Ok(_mapper.Map<RestaurantDto>(restaurant));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
         {
             var restaurantFromRepo = await _restaurantsRepository.GetAsync(id);
