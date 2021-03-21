@@ -10,7 +10,7 @@ namespace RestaurantAPI.Shared.Validators
             RuleFor(r => r.Name).NotEmpty().Length(2, 30);
             RuleFor(r => r.Description).Length(2, 500);
             RuleFor(r => r.Category).NotEmpty().Length(2, 30);
-            RuleFor(r => r.HasDelivery).NotEmpty();
+            RuleFor(r => r.HasDelivery).NotNull();
             RuleFor(r => r.ContactEmail).NotEmpty().Length(4, 40).EmailAddress();
             RuleFor(r => r.ContactNumber).NotEmpty().Length(7, 16).PhoneNumber();
 
