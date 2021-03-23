@@ -28,7 +28,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
+        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants()
         {
             var restaurants = await _restaurantsRepository.GetAllAsync();
 
@@ -36,7 +36,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
+        public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
             var restaurant = await _restaurantsRepository.GetAsync(id);
 
@@ -71,7 +71,7 @@ namespace RestaurantAPI.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Restaurant>> PostRestaurant(RestaurantForCreationDto restaurant)
+        public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
             var newRestaurant = _mapper.Map<Restaurant>(restaurant);
             await _restaurantsRepository.AddAsync(newRestaurant);
