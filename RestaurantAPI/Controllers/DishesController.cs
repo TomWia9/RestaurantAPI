@@ -33,7 +33,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<DishDto>>> GetDish(int restaurantId, int id)
+        public async Task<ActionResult<DishDto>> GetDish(int restaurantId, int id)
         {
             var dish = await _dishesRepository.GetAsync(restaurantId, id);
 
@@ -53,7 +53,7 @@ namespace RestaurantAPI.Controllers
 
             if (await _dishesRepository.AddAsync(newDish))
             {
-                return CreatedAtAction("GetDish", new {id = newDish.Id}, _mapper.Map<DishDto>(newDish));
+                return CreatedAtAction("GetDish", new {restaurantId, id = newDish.Id}, _mapper.Map<DishDto>(newDish));
             }
 
             return BadRequest();
