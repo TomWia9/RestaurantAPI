@@ -12,8 +12,8 @@ namespace RestaurantAPI.Shared.Validators
         protected DishValidator()
         {
             RuleFor(d => d.Name).NotEmpty().Length(2, 30);
-            RuleFor(d => d.Description).NotEmpty().Length(5, 500);
-            RuleFor(d => d.Price).NotEmpty();
+            RuleFor(d => d.Description).Length(5, 500);
+            RuleFor(d => d.Price).NotEmpty().GreaterThan(0);
 
         }
     }
