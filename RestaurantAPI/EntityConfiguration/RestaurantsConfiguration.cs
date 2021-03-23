@@ -39,7 +39,9 @@ namespace RestaurantAPI.EntityConfiguration
                 .HasForeignKey<Address>(a => a.RestaurantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
+            builder.HasMany(r => r.Dishes)
+                .WithOne(d => d.Restaurant)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
