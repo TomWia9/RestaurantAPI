@@ -16,6 +16,9 @@ namespace RestaurantAPI.EntityConfiguration
                 .IsRequired()
                 .HasMaxLength(30);
 
+            builder.Property(d => d.Description)
+                .HasMaxLength(500);
+
             builder.Property(d => d.Price)
                 .IsRequired()
                 .HasColumnType("decimal(18,4)");
