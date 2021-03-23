@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
+using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
 
@@ -36,6 +37,8 @@ namespace RestaurantAPI
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<RestaurantSeeder>();
+
+            services.AddScoped<ErrorHandlingMiddleware>();
 
             services.AddTransient<IValidator<RestaurantForCreationDto>, RestaurantForCreationValidator>();
             services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
@@ -71,6 +74,7 @@ namespace RestaurantAPI
                 app.UseSerilogRequestLogging();
             }
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
