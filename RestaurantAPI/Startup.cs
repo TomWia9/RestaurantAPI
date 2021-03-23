@@ -36,6 +36,7 @@ namespace RestaurantAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
+            services.AddScoped<IDishesRepository, DishesRepository>();
             services.AddScoped<RestaurantSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
