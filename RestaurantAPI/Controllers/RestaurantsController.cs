@@ -16,13 +16,11 @@ namespace RestaurantAPI.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        private readonly RestaurantDbContext _context;
         private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
 
-        public RestaurantsController(RestaurantDbContext context, IRestaurantsRepository restaurantsRepository, IMapper mapper)
+        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMapper mapper)
         {
-            _context = context;
             _restaurantsRepository = restaurantsRepository;
             _mapper = mapper;
         }
@@ -65,7 +63,7 @@ namespace RestaurantAPI.Controllers
                 return NoContent();
             }
 
-            return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+            return BadRequest();
 
         }
 
@@ -74,10 +72,15 @@ namespace RestaurantAPI.Controllers
         public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
             var newRestaurant = _mapper.Map<Restaurant>(restaurant);
-            await _restaurantsRepository.AddAsync(newRestaurant);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRestaurant", new { id = newRestaurant.Id }, _mapper.Map<RestaurantDto>(newRestaurant));
+            if (await _restaurantsRepository.AddAsync(newRestaurant))
+            {
+                return CreatedAtAction("GetRestaurant", new { id = newRestaurant.Id }, _mapper.Map<RestaurantDto>(newRestaurant));
+
+            }
+
+            return BadRequest();
+
         }
 
         [HttpDelete("{id}")]
@@ -95,8 +98,7 @@ namespace RestaurantAPI.Controllers
                 return NoContent();
             }
 
-            return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
-
+            return BadRequest();
         }
     }
 }
