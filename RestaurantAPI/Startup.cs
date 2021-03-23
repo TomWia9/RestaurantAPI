@@ -18,6 +18,7 @@ using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 using RestaurantAPI.Shared.Validators;
+using Serilog;
 
 namespace RestaurantAPI
 {
@@ -66,7 +67,10 @@ namespace RestaurantAPI
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantAPI v1"));
+
+                app.UseSerilogRequestLogging();
             }
+
 
             app.UseHttpsRedirection();
 
