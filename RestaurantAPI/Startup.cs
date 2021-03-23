@@ -43,6 +43,8 @@ namespace RestaurantAPI
 
             services.AddTransient<IValidator<RestaurantForCreationDto>, RestaurantForCreationValidator>();
             services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
+            services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
+            services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
 
 
             services.AddDbContext<RestaurantDbContext>
