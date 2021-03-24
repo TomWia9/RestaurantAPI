@@ -24,7 +24,7 @@ namespace RestaurantAPI.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("signup")]
+        [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
         {
             var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
@@ -37,6 +37,26 @@ namespace RestaurantAPI.Controllers
             }
 
             return Problem(userCreateResult.Errors.First().Description, null, 500);
+        }
+
+        [HttpPost("signIn")]
+        public async Task<IActionResult> SignUp(UserLoginResource userLoginResource)
+        {
+            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginResource.Email);
+
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+
+            var userSignInResult = await _userManager.CheckPasswordAsync(user, userLoginResource.Password);
+
+            if (userSignInResult)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Email or password incorrect");
         }
     }
 }
