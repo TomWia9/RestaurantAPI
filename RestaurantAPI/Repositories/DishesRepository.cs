@@ -7,13 +7,10 @@ using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Repositories
 {
-    public class DishesRepository : IDishesRepository
+    public class DishesRepository : GenericRepository<Dish>, IDishesRepository
     {
-        private readonly RestaurantDbContext _context;
-
-        public DishesRepository(RestaurantDbContext context)
+        public DishesRepository(RestaurantDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<IEnumerable<Dish>> GetAllAsync(int restaurantId)
@@ -26,21 +23,5 @@ namespace RestaurantAPI.Repositories
             return await _context.Dishes.FirstOrDefaultAsync(d => d.RestaurantId == restaurantId && d.Id == id);
         }
 
-        public async Task<bool> AddAsync(Dish dish)
-        {
-            await _context.Dishes.AddAsync(dish);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> DeleteAsync(Dish dish)
-        {
-             _context.Dishes.Remove(dish);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> UpdateAsync(Dish dish)
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
     }
 }

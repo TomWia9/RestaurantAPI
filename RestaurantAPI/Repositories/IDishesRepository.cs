@@ -6,12 +6,10 @@ using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Repositories
 {
-    public interface IDishesRepository
+    public interface IDishesRepository : IGenericRepository<Dish>
     {
         Task<IEnumerable<Dish>> GetAllAsync(int restaurantId);
         Task<Dish> GetAsync(int restaurantId, int id);
-        Task<bool> AddAsync(Dish dish);
-        Task<bool> DeleteAsync(Dish dish);
-        Task<bool> UpdateAsync(Dish dish);
+      
     }
 }

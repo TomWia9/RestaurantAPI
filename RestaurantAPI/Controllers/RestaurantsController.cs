@@ -58,7 +58,9 @@ namespace RestaurantAPI.Controllers
 
             _mapper.Map(restaurant, restaurantFromRepo);
 
-            if(await _restaurantsRepository.UpdateAsync(restaurantFromRepo))
+            _restaurantsRepository.Update(restaurantFromRepo);
+
+            if(await _restaurantsRepository.SaveChangesAsync())
             {
                 return NoContent();
             }
@@ -73,10 +75,11 @@ namespace RestaurantAPI.Controllers
         {
             var newRestaurant = _mapper.Map<Restaurant>(restaurant);
 
-            if (await _restaurantsRepository.AddAsync(newRestaurant))
+            await _restaurantsRepository.AddAsync(newRestaurant);
+
+            if (await _restaurantsRepository.SaveChangesAsync())
             {
                 return CreatedAtAction("GetRestaurant", new { id = newRestaurant.Id }, _mapper.Map<RestaurantDto>(newRestaurant));
-
             }
 
             return BadRequest();
@@ -93,7 +96,9 @@ namespace RestaurantAPI.Controllers
                 return NotFound();
             }
 
-            if (await _restaurantsRepository.DeleteAsync(restaurant))
+            _restaurantsRepository.Delete(restaurant);
+
+            if (await _restaurantsRepository.SaveChangesAsync())
             {
                 return NoContent();
             }
