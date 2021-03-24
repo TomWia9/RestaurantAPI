@@ -13,9 +13,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
+using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
@@ -49,6 +51,17 @@ namespace RestaurantAPI
 
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+
+            services.AddIdentity<User, Role>(options =>
+                {
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                })
+                .AddEntityFrameworkStores<RestaurantDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAutoMapper(GetType().Assembly);
             services.AddMvc().AddFluentValidation(options =>
