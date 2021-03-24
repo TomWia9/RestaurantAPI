@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantAPI.Repositories
 {
-    interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<in T> where T : class
     {
         Task AddAsync(T entity);
         void Delete(T entity);

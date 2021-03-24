@@ -8,13 +8,10 @@ using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Repositories
 {
-    public class RestaurantRepository : IRestaurantsRepository
+    public class RestaurantRepository : GenericRepository<Restaurant>, IRestaurantsRepository
     {
-        private readonly RestaurantDbContext _context;
-
-        public RestaurantRepository(RestaurantDbContext context)
+        public RestaurantRepository(RestaurantDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<IEnumerable<Restaurant>> GetAllAsync()
@@ -27,21 +24,5 @@ namespace RestaurantAPI.Repositories
             return await _context.Restaurants.Include(r => r.Address).FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<bool> AddAsync(Restaurant restaurant)
-        {
-           await _context.Restaurants.AddAsync(restaurant);
-           return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> DeleteAsync(Restaurant restaurant)
-        {
-            _context.Restaurants.Remove(restaurant);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> UpdateAsync(Restaurant restaurant)
-        {
-            return await _context.SaveChangesAsync() > 0; 
-        }
     }
 }
