@@ -51,7 +51,9 @@ namespace RestaurantAPI.Controllers
             var newDish = _mapper.Map<Dish>(dish);
             newDish.RestaurantId = restaurantId;
 
-            if (await _dishesRepository.AddAsync(newDish))
+            await _dishesRepository.AddAsync(newDish);
+
+            if (await _dishesRepository.SaveChangesAsync())
             {
                 return CreatedAtAction("GetDish", new {restaurantId, id = newDish.Id}, _mapper.Map<DishDto>(newDish));
             }
@@ -71,7 +73,9 @@ namespace RestaurantAPI.Controllers
 
             _mapper.Map(dish, dishFromRepo);
 
-            if (await _dishesRepository.UpdateAsync(dishFromRepo))
+            _dishesRepository.Update(dishFromRepo);
+
+            if (await _dishesRepository.SaveChangesAsync())
             {
                 return NoContent();
             }
@@ -90,7 +94,9 @@ namespace RestaurantAPI.Controllers
                 return NotFound();
             }
 
-            if (await _dishesRepository.DeleteAsync(dish))
+            _dishesRepository.Delete(dish);
+
+            if (await _dishesRepository.SaveChangesAsync())
             {
                 return NoContent();
             }
