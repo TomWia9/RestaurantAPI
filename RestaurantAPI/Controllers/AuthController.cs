@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using RestaurantAPI.Data.Requests;
 using RestaurantAPI.Models.Auth;
+using RestaurantAPI.Services;
 
 namespace RestaurantAPI.Controllers
 {
@@ -16,64 +17,38 @@ namespace RestaurantAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
+        private readonly IIdentityService _identityService;
 
-        public AuthController(IMapper mapper, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public AuthController(IMapper mapper, IIdentityService identityService)
         {
             _mapper = mapper;
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _identityService = identityService;
         }
 
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(UserSignUpRequest userSignUpRequest)
         {
-            var user = _mapper.Map<UserSignUpRequest, User>(userSignUpRequest);
+            var result = await _identityService.Register(userSignUpRequest);
 
-            var userCreateResult = await _userManager.CreateAsync(user, userSignUpRequest.Password);
-
-            if (userCreateResult.Succeeded)
+            if (result.Succeeded)
             {
                 return Created(string.Empty, string.Empty);
             }
 
-            return Problem(userCreateResult.Errors.First().Description, null, 500);
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("signIn")]
         public async Task<IActionResult> SignIn(UserLoginRequest userLoginRequest)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginRequest.Email);
+            var result = await _identityService.Login(userLoginRequest);
 
-            if (user is null)
-            {
-                return NotFound("User not found");
-            }
-
-            var userSignInResult = await _userManager.CheckPasswordAsync(user, userLoginRequest.Password);
-
-            if (userSignInResult)
+            if (result == true)
             {
                 return Ok();
             }
 
             return BadRequest("Email or password incorrect");
         }
-
-        //[HttpPost("User/{userEmail}/Role")]
-        //public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
-        //{
-        //    var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
-
-        //    var result = await _userManager.AddToRoleAsync(user, roleName);
-
-        //    if (result.Succeeded)
-        //    {
-        //        return Ok();
-        //    }
-
-        //    return Problem(result.Errors.First().Description, null, 500);
-        //}
     }
 }

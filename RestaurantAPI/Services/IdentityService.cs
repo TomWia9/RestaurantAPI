@@ -17,7 +17,7 @@ namespace RestaurantAPI.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> Register(UserSignUpRequest userSignUpRequest)
+        public async Task<IdentityResult> Register(UserSignUpRequest userSignUpRequest)
         {
             var newUser = new User()
             {
@@ -31,12 +31,18 @@ namespace RestaurantAPI.Services
 
            if (!createdUserResult.Succeeded)
            {
-               return false;
+               return createdUserResult;
            }
 
            var addedRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
 
-           return addedRoleResult.Succeeded;
+           if (!createdUserResult.Succeeded)
+           {
+               return addedRoleResult;
+           }
+
+           return IdentityResult.Success;
+
         }
 
         public async Task<bool> Login(UserLoginRequest userLoginRequest)
@@ -46,6 +52,7 @@ namespace RestaurantAPI.Services
             if (user == null)
             {
                 return false;
+                //TODO it should also return errors
             }
 
             var userHasValidPassword = await _userManager.CheckPasswordAsync(user, userLoginRequest.Password);
@@ -58,13 +65,6 @@ namespace RestaurantAPI.Services
 
             return false;
 
-        }
-
-        public async Task<bool> UserExists(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            return user != null;
         }
     }
 }
