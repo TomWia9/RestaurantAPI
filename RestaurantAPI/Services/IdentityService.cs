@@ -27,9 +27,16 @@ namespace RestaurantAPI.Services
                 LastName = userSignUpRequest.LastName
             };
 
-           var createdUser = await _userManager.CreateAsync(newUser, userSignUpRequest.Password);
+           var createdUserResult = await _userManager.CreateAsync(newUser, userSignUpRequest.Password);
 
-           return createdUser.Succeeded;
+           if (!createdUserResult.Succeeded)
+           {
+               return false;
+           }
+
+           var addedRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
+
+           return addedRoleResult.Succeeded;
         }
 
         public async Task<bool> Login(UserSignUpRequest userSignInRequest)
