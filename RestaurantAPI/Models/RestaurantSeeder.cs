@@ -2,35 +2,87 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using RestaurantAPI.Models.Auth;
 
 namespace RestaurantAPI.Models
 {
     public class RestaurantSeeder
     {
         private readonly RestaurantDbContext _context;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<RestaurantSeeder> _logger;
 
-        public RestaurantSeeder(RestaurantDbContext context)
+        public RestaurantSeeder(RestaurantDbContext context, RoleManager<Role> roleManager, UserManager<User> userManager, ILogger<RestaurantSeeder> logger)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
+            _logger = logger;
         }
+
         public void Seed()
         {
+
+            _logger.LogInformation("Connecting to database");
+
             if (_context.Database.CanConnect())
             {
-                var pendingMigrations =  _context.Database.GetPendingMigrations();
+                _logger.LogInformation("Connected to database");
+
+
+                var pendingMigrations = _context.Database.GetPendingMigrations();
 
                 if (pendingMigrations != null && pendingMigrations.Any())
                 {
                     _context.Database.Migrate();
                 }
 
-                if (! _context.Restaurants.Any())
+                if (!_context.Restaurants.Any())
                 {
+
                     var restaurants = GetRestaurants();
 
-                     _context.Restaurants.AddRange(restaurants);
-                     _context.SaveChanges();
+                    _context.Restaurants.AddRange(restaurants);
+                    _context.SaveChanges();
+                    _logger.LogInformation("Seeded restaurants");
+
+                }
+
+                if (!_roleManager.Roles.Any())
+                {
+                    _roleManager.CreateAsync(new Role()
+                    {
+                        Name = "User"
+                    }).Wait();
+
+                    _roleManager.CreateAsync(new Role()
+                    {
+                        Name = "Administrator"
+                    }).Wait();
+
+                    _logger.LogInformation("Seeded roles");
+
+                }
+
+                if (!_userManager.Users.Any())
+                {
+                    var newUser = new User()
+                    {
+                        Email = "admin@admin",
+                        UserName = "admin",
+                        FirstName = "admin",
+                        LastName = "admin"
+                    };
+
+                   _userManager.CreateAsync(newUser,"Admin123_").Wait();
+                   _userManager.AddToRoleAsync(newUser, "Administrator").Wait();
+
+                    _logger.LogInformation("Seeded user");
+
                 }
             }
         }
