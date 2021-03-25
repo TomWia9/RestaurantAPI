@@ -10,7 +10,7 @@ namespace RestaurantAPI.Services
     public interface IIdentityService
     {
         Task<bool> Register(UserSignUpRequest userSignUpRequest);
-        Task<bool> Login(UserSignUpRequest userSignInRequest);
+        Task<bool> Login(UserLoginRequest userLoginRequest);
         Task<bool> UserExists(string email);
     }
 }

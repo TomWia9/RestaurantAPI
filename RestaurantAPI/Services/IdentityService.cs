@@ -39,16 +39,16 @@ namespace RestaurantAPI.Services
            return addedRoleResult.Succeeded;
         }
 
-        public async Task<bool> Login(UserSignUpRequest userSignInRequest)
+        public async Task<bool> Login(UserLoginRequest userLoginRequest)
         {
-            var user = await _userManager.FindByEmailAsync(userSignInRequest.Email);
+            var user = await _userManager.FindByEmailAsync(userLoginRequest.Email);
 
             if (user == null)
             {
                 return false;
             }
 
-            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, userSignInRequest.Password);
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, userLoginRequest.Password);
 
             if (userHasValidPassword)
             {

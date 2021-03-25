@@ -19,6 +19,7 @@ using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
+using RestaurantAPI.Services;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
@@ -39,6 +40,7 @@ namespace RestaurantAPI
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<IDishesRepository, DishesRepository>();
+            services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<RestaurantSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
