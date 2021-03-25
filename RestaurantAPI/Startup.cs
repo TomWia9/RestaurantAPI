@@ -13,10 +13,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
+using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
+using RestaurantAPI.Services;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
@@ -37,6 +40,7 @@ namespace RestaurantAPI
         {
             services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
             services.AddScoped<IDishesRepository, DishesRepository>();
+            services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<RestaurantSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
@@ -49,6 +53,15 @@ namespace RestaurantAPI
 
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+
+            services.AddIdentity<User, Role>(options =>
+                {
+                    options.Password.RequiredLength = 8;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                })
+                .AddEntityFrameworkStores<RestaurantDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAutoMapper(GetType().Assembly);
             services.AddMvc().AddFluentValidation(options =>
