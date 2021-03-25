@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Data.Requests;
+using RestaurantAPI.Models.Auth;
 
 namespace RestaurantAPI.Services
 {
@@ -10,5 +11,6 @@ namespace RestaurantAPI.Services
     {
         Task<bool> Register(UserSignUpRequest userSignUpRequest);
         Task<bool> Login(UserSignUpRequest userSignInRequest);
+        Task<bool> UserExists(string email);
     }
 }
