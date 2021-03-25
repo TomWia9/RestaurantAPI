@@ -17,11 +17,13 @@ namespace RestaurantAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public AuthController(IMapper mapper, UserManager<User> userManager)
+        public AuthController(IMapper mapper, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost("signUp")]
@@ -57,6 +59,44 @@ namespace RestaurantAPI.Controllers
             }
 
             return BadRequest("Email or password incorrect");
+        }
+
+        [HttpPost("Roles")]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                return BadRequest("Role name should be provided.");
+            }
+
+            var newRole = new Role()
+            {
+                Name = roleName
+            };
+
+            var roleResult = await _roleManager.CreateAsync(newRole);
+
+            if (roleResult.Succeeded)
+            {
+                return Created(string.Empty, string.Empty);
+            }
+
+            return Problem(roleResult.Errors.First().Description, null, 500);
+        }
+
+        [HttpPost("User/{userEmail}/Role")]
+        public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
+        {
+            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return Problem(result.Errors.First().Description, null, 500);
         }
     }
 }
