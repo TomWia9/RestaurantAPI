@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using RestaurantAPI.Data.Resources;
+using RestaurantAPI.Data.Request;
 using RestaurantAPI.Models.Auth;
 
 namespace RestaurantAPI.Data.Profiles
@@ -12,7 +12,7 @@ namespace RestaurantAPI.Data.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserSignUpResource, User>()
+            CreateMap<UserSignUpRequest, User>()
                 .ForMember(u => u.UserName, opt => opt.MapFrom(ur => ur.Email));
         }
     }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using RestaurantAPI.Data.Resources;
+using RestaurantAPI.Data.Request;
 using RestaurantAPI.Models.Auth;
 
 namespace RestaurantAPI.Controllers
@@ -27,11 +27,11 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpPost("signUp")]
-        public async Task<IActionResult> SignUp(UserSignUpResource userSignUpResource)
+        public async Task<IActionResult> SignUp(UserSignUpRequest userSignUpRequest)
         {
-            var user = _mapper.Map<UserSignUpResource, User>(userSignUpResource);
+            var user = _mapper.Map<UserSignUpRequest, User>(userSignUpRequest);
 
-            var userCreateResult = await _userManager.CreateAsync(user, userSignUpResource.Password);
+            var userCreateResult = await _userManager.CreateAsync(user, userSignUpRequest.Password);
 
             if (userCreateResult.Succeeded)
             {
@@ -42,16 +42,16 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpPost("signIn")]
-        public async Task<IActionResult> SignUp(UserLoginResource userLoginResource)
+        public async Task<IActionResult> SignUp(UserLoginRequest userLoginRequest)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginResource.Email);
+            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginRequest.Email);
 
             if (user is null)
             {
                 return NotFound("User not found");
             }
 
-            var userSignInResult = await _userManager.CheckPasswordAsync(user, userLoginResource.Password);
+            var userSignInResult = await _userManager.CheckPasswordAsync(user, userLoginRequest.Password);
 
             if (userSignInResult)
             {

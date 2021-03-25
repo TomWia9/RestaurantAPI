@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace RestaurantAPI.Data.Resources
+﻿namespace RestaurantAPI.Data.Request
 {
-    public class UserSignUpResource
+    public class UserSignUpRequest
     {
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
 
     }
 }
