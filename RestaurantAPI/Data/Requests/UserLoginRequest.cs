@@ -1,4 +1,4 @@
-﻿namespace RestaurantAPI.Data.Request
+﻿namespace RestaurantAPI.Data.Requests
 {
     public class UserLoginRequest
     {

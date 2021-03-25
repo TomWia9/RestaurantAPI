@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using RestaurantAPI.Data.Request;
+using RestaurantAPI.Data.Requests;
 using RestaurantAPI.Models.Auth;
 
 namespace RestaurantAPI.Controllers
@@ -42,7 +42,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpPost("signIn")]
-        public async Task<IActionResult> SignUp(UserLoginRequest userLoginRequest)
+        public async Task<IActionResult> SignIn(UserLoginRequest userLoginRequest)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginRequest.Email);
 
@@ -61,42 +61,19 @@ namespace RestaurantAPI.Controllers
             return BadRequest("Email or password incorrect");
         }
 
-        [HttpPost("Roles")]
-        public async Task<IActionResult> CreateRole(string roleName)
-        {
-            if (string.IsNullOrWhiteSpace(roleName))
-            {
-                return BadRequest("Role name should be provided.");
-            }
+        //[HttpPost("User/{userEmail}/Role")]
+        //public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
+        //{
+        //    var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
 
-            var newRole = new Role()
-            {
-                Name = roleName
-            };
+        //    var result = await _userManager.AddToRoleAsync(user, roleName);
 
-            var roleResult = await _roleManager.CreateAsync(newRole);
+        //    if (result.Succeeded)
+        //    {
+        //        return Ok();
+        //    }
 
-            if (roleResult.Succeeded)
-            {
-                return Created(string.Empty, string.Empty);
-            }
-
-            return Problem(roleResult.Errors.First().Description, null, 500);
-        }
-
-        [HttpPost("User/{userEmail}/Role")]
-        public async Task<IActionResult> AddUserToRole(string userEmail, [FromBody] string roleName)
-        {
-            var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
-
-            var result = await _userManager.AddToRoleAsync(user, roleName);
-
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            return Problem(result.Errors.First().Description, null, 500);
-        }
+        //    return Problem(result.Errors.First().Description, null, 500);
+        //}
     }
 }
