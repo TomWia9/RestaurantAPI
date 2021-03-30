@@ -43,12 +43,12 @@ namespace RestaurantAPI.Controllers
         {
             var result = await _identityService.Login(userLoginRequest);
 
-            if (result == true)
+            if (result.Success)
             {
-                return Ok();
+                return Ok(result);
             }
 
-            return BadRequest("Email or password incorrect");
+            return BadRequest(result.ErrorMessages);
         }
     }
 }

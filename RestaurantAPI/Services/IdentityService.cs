@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantAPI.Data.Requests;
 using RestaurantAPI.Data.Response;
@@ -19,10 +20,10 @@ namespace RestaurantAPI.Services
         private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings)
+        public IdentityService(UserManager<User> userManager, IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
-            _jwtSettings = jwtSettings;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<IdentityResult> Register(UserSignUpRequest userSignUpRequest)
@@ -99,7 +100,7 @@ namespace RestaurantAPI.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 }),
                 Expires = DateTime.Now.AddDays(Convert.ToDouble(_jwtSettings.ExpirationInDays)),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
                 Issuer = _jwtSettings.Issuer
             };
 
