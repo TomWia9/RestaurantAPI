@@ -20,6 +20,7 @@ using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
 using RestaurantAPI.Services;
+using RestaurantAPI.Settings;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
@@ -49,6 +50,8 @@ namespace RestaurantAPI
             services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
             services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
             services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
 
             services.AddDbContext<RestaurantDbContext>
