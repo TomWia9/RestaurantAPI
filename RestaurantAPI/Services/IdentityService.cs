@@ -77,14 +77,17 @@ namespace RestaurantAPI.Services
                 };
             }
 
-            return GenerateAuthenticationResponseWithToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return GenerateAuthenticationResponseWithToken(user, roles);
 
         }
 
-        private AuthenticationResponse GenerateAuthenticationResponseWithToken(User user)
+        private AuthenticationResponse GenerateAuthenticationResponseWithToken(User user, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
+            var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -99,6 +102,8 @@ namespace RestaurantAPI.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _jwtSettings.Issuer
             };
+
+            tokenDescriptor.Subject.AddClaims(roleClaims);
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
