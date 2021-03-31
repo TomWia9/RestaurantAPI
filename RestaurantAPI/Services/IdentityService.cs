@@ -26,7 +26,7 @@ namespace RestaurantAPI.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<IdentityResult> Register(UserSignUpRequest userSignUpRequest)
+        public async Task<AuthenticationResponse> Register(UserSignUpRequest userSignUpRequest)
         {
             var newUser = new User()
             {
@@ -40,17 +40,25 @@ namespace RestaurantAPI.Services
 
            if (!createdUserResult.Succeeded)
            {
-               return createdUserResult;
+               return new AuthenticationResponse()
+                {
+                    Success = false,
+                    ErrorMessages = createdUserResult.Errors.Select(e => e.Description)
+                }; 
            }
 
            var addedRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
 
-           if (!createdUserResult.Succeeded)
+           if (!addedRoleResult.Succeeded)
            {
-               return addedRoleResult;
-           }
+               return new AuthenticationResponse()
+               {
+                   Success = false,
+                   ErrorMessages = addedRoleResult.Errors.Select(e => e.Description)
+               };
+            }
 
-           return IdentityResult.Success;
+           return await GenerateAuthenticationResponseWithTokenAsync(newUser);
 
         }
 
@@ -78,17 +86,14 @@ namespace RestaurantAPI.Services
                 };
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return GenerateAuthenticationResponseWithToken(user, roles);
+            return await GenerateAuthenticationResponseWithTokenAsync(user);
 
         }
 
-        private AuthenticationResponse GenerateAuthenticationResponseWithToken(User user, IEnumerable<string> roles)
+        private async Task<AuthenticationResponse> GenerateAuthenticationResponseWithTokenAsync(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
-            var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -104,6 +109,8 @@ namespace RestaurantAPI.Services
                 Issuer = _jwtSettings.Issuer
             };
 
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
             tokenDescriptor.Subject.AddClaims(roleClaims);
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -115,7 +122,5 @@ namespace RestaurantAPI.Services
                 Token = tokenHandler.WriteToken(token)
             };
         }
-
-
     }
 }

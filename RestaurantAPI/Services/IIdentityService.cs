@@ -11,7 +11,7 @@ namespace RestaurantAPI.Services
 {
     public interface IIdentityService
     {
-        Task<IdentityResult> Register(UserSignUpRequest userSignUpRequest);
+        Task<AuthenticationResponse> Register(UserSignUpRequest userSignUpRequest);
         Task<AuthenticationResponse> Login(UserLoginRequest userLoginRequest);
     }
 }
