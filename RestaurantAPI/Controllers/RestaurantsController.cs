@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
@@ -46,6 +48,7 @@ namespace RestaurantAPI.Controllers
             return Ok(_mapper.Map<RestaurantDto>(restaurant));
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
         {
@@ -69,7 +72,7 @@ namespace RestaurantAPI.Controllers
 
         }
 
-
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
@@ -86,6 +89,7 @@ namespace RestaurantAPI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {

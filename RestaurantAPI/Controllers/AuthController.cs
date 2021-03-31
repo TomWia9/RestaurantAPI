@@ -16,12 +16,10 @@ namespace RestaurantAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IIdentityService _identityService;
 
-        public AuthController(IMapper mapper, IIdentityService identityService)
+        public AuthController(IIdentityService identityService)
         {
-            _mapper = mapper;
             _identityService = identityService;
         }
 
@@ -30,12 +28,12 @@ namespace RestaurantAPI.Controllers
         {
             var result = await _identityService.Register(userSignUpRequest);
 
-            if (result.Succeeded)
+            if (result.Success)
             {
-                return Created(string.Empty, string.Empty);
+                return Created(string.Empty, result);
             }
 
-            return BadRequest(result.Errors);
+            return BadRequest(result.ErrorMessages);
         }
 
         [HttpPost("signIn")]
@@ -43,12 +41,12 @@ namespace RestaurantAPI.Controllers
         {
             var result = await _identityService.Login(userLoginRequest);
 
-            if (result == true)
+            if (result.Success)
             {
-                return Ok();
+                return Ok(result);
             }
 
-            return BadRequest("Email or password incorrect");
+            return BadRequest(result.ErrorMessages);
         }
     }
 }

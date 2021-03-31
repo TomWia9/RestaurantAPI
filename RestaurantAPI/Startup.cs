@@ -9,20 +9,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
 using RestaurantAPI.Services;
+using RestaurantAPI.Settings;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RestaurantAPI
 {
@@ -50,6 +55,8 @@ namespace RestaurantAPI
             services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
             services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
 
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+
 
             services.AddDbContext<RestaurantDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
@@ -63,6 +70,8 @@ namespace RestaurantAPI
                 .AddEntityFrameworkStores<RestaurantDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuth(Configuration.GetSection("Jwt").Get<JwtSettings>());
+
             services.AddAutoMapper(GetType().Assembly);
             services.AddMvc().AddFluentValidation(options =>
             {
@@ -70,10 +79,8 @@ namespace RestaurantAPI
             });
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantAPI", Version = "v1" });
-            });
+
+            services.UseSwagger(); //extension method
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,8 +91,13 @@ namespace RestaurantAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantAPI v1"));
+                app.UseSwaggerUI(setupAction =>
+                {
+                    setupAction.SwaggerEndpoint("/swagger/RestaurantAPISepcification/swagger.json",
+                        "RestaurantAPI");
+                });
 
                 app.UseSerilogRequestLogging();
             }
@@ -96,7 +108,7 @@ namespace RestaurantAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {
