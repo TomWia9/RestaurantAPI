@@ -27,8 +27,8 @@ namespace RestaurantAPI.Extensions
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Issuer,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                         ClockSkew = TimeSpan.Zero
                     };
