@@ -16,6 +16,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Repositories;
@@ -66,6 +67,8 @@ namespace RestaurantAPI
                 .AddEntityFrameworkStores<RestaurantDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuth(Configuration.GetSection("Jwt").Get<JwtSettings>());
+
             services.AddAutoMapper(GetType().Assembly);
             services.AddMvc().AddFluentValidation(options =>
             {
@@ -99,7 +102,7 @@ namespace RestaurantAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {
