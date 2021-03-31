@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -25,6 +27,7 @@ using RestaurantAPI.Settings;
 using RestaurantAPI.Shared.Middleware;
 using RestaurantAPI.Shared.Validators;
 using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RestaurantAPI
 {
@@ -76,9 +79,62 @@ namespace RestaurantAPI
             });
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+            services.AddSwaggerGen(setupAction =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantAPI", Version = "v1" });
+                setupAction.SwaggerDoc(
+                    "RestaurantAPISepcification",
+                    new OpenApiInfo()
+                    {
+                        Title = "RestaurantAPI",
+                        Version = "1",
+                        Description = "Through this API you can access restaurants and dishes",
+                        Contact = new OpenApiContact()
+                        {
+                            Email = "tomaszwiatrowski9@gmail.com",
+                            Name = "Tomasz Wiatrowski",
+                            Url = new Uri("https://www.linkedin.com/in/tomasz-wiatrowski-279b00176/")
+                        },
+                        License = new OpenApiLicense()
+                        {
+                            Name = "MIT License",
+                            Url = new Uri("https://opensource.org/licenses/MIT")
+                        }
+                    });
+
+                OpenApiSecurityScheme securityDefinition = new()
+                {
+                    Name = "Bearer",
+                    BearerFormat = "JWT",
+                    Scheme = "bearer",
+                    Description = "Specify the authorization token.",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                };
+                setupAction.AddSecurityDefinition("jwt_auth", securityDefinition);
+
+                OpenApiSecurityScheme securityScheme = new()
+                {
+                    Reference = new OpenApiReference()
+                    {
+                        Id = "jwt_auth",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                OpenApiSecurityRequirement securityRequirements = new()
+                {
+                    {securityScheme, Array.Empty<string>() },
+                };
+                setupAction.AddSecurityRequirement(securityRequirements);
+
+                //add xml comments
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
+                setupAction.AddFluentValidationRules();
+
             });
         }
 
@@ -91,7 +147,11 @@ namespace RestaurantAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantAPI v1"));
+                app.UseSwaggerUI(setupAction =>
+                {
+                    setupAction.SwaggerEndpoint("/swagger/RestaurantAPISepcification/swagger.json",
+                        "RestaurantAPI");
+                });
 
                 app.UseSerilogRequestLogging();
             }
