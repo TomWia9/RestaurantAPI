@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
+    [Authorize]
     [Route("api/Restaurants/{restaurantId}/[controller]")]
     [ApiController]
     public class DishesController : ControllerBase
