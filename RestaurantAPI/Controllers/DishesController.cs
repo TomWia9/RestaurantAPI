@@ -47,6 +47,7 @@ namespace RestaurantAPI.Controllers
             return Ok(_mapper.Map<DishDto>(dish));
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<DishDto>> NewDish(int restaurantId, DishForCreationDto dish)
         {
@@ -63,6 +64,7 @@ namespace RestaurantAPI.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
         {
@@ -86,6 +88,7 @@ namespace RestaurantAPI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId, int id)
         {
