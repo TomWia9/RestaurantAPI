@@ -56,6 +56,7 @@ namespace RestaurantAPI
             services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
             services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
             services.AddTransient<IValidator<UserSignUpRequest>, UserSignUpRequestValidator>();
+            services.AddTransient<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
