@@ -18,6 +18,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Data.Requests;
 using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
@@ -54,6 +55,8 @@ namespace RestaurantAPI
             services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
             services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
             services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
+            services.AddTransient<IValidator<UserSignUpRequest>, UserSignUpRequestValidator>();
+            services.AddTransient<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 

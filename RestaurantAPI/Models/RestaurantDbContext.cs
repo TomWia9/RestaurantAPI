@@ -26,6 +26,7 @@ namespace RestaurantAPI.Models
             modelBuilder.ApplyConfiguration(new RestaurantsConfiguration());
             modelBuilder.ApplyConfiguration(new DishesConfiguration());
             modelBuilder.ApplyConfiguration(new AddressesConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
     }
 }
