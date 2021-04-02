@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Repositories
@@ -17,6 +18,41 @@ namespace RestaurantAPI.Repositories
         public async Task<IEnumerable<Restaurant>> GetAllAsync()
         {
             return await _context.Restaurants.Include(r => r.Address).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters)
+        {
+            if (restaurantsResourceParameters == null)
+            {
+                throw new ArgumentNullException(nameof(restaurantsResourceParameters));
+            }
+
+            if (restaurantsResourceParameters.HasDelivery == null
+                && string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery))
+            {
+                return await GetAllAsync();
+            }
+
+            var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
+
+            if (restaurantsResourceParameters.HasDelivery != null)
+            {
+                collection = collection.Where(r => r.HasDelivery == restaurantsResourceParameters.HasDelivery);
+            }
+
+            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery))
+            {
+                var searchQuery = restaurantsResourceParameters.SearchQuery.Trim();
+
+                collection = collection.Where(r =>
+                    r.Name.Contains(searchQuery) ||
+                    r.Description.Contains(searchQuery) ||
+                    r.Category.Contains(searchQuery) ||
+                    r.Address.City.Contains(searchQuery));
+            }
+
+            return await collection.ToListAsync();
+
         }
 
         public async Task<Restaurant> GetAsync(int id)
