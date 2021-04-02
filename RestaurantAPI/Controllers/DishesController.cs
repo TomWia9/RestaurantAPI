@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 
@@ -27,9 +28,9 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId)
+        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
-            var dishes = await _dishesRepository.GetAllAsync(restaurantId);
+            var dishes = await _dishesRepository.GetAllAsync(restaurantId, dishesResourceParameters);
 
             return Ok(_mapper.Map<IEnumerable<DishDto>>(dishes));
         }
