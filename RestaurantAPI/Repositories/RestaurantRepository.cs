@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
+using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Shared.Enums;
 using RestaurantAPI.Shared.PagedList;
@@ -27,6 +28,7 @@ namespace RestaurantAPI.Repositories
 
             var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
 
+            //filtering
             if (restaurantsResourceParameters.HasDelivery != null)
             {
                 collection = collection.Where(r => r.HasDelivery == restaurantsResourceParameters.HasDelivery);
@@ -43,6 +45,7 @@ namespace RestaurantAPI.Repositories
                     r.Address.City.Contains(searchQuery));
             }
 
+            //sorting
             if (string.IsNullOrWhiteSpace(restaurantsResourceParameters.SortBy))
             {
                 //default sorting
@@ -53,6 +56,7 @@ namespace RestaurantAPI.Repositories
             //custom sorting
             collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy, restaurantsResourceParameters.SortDirection);
 
+            //pagination
             return await PagedList<Restaurant>.ToPagedListAsync(collection,
                 restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
 
@@ -73,7 +77,7 @@ namespace RestaurantAPI.Repositories
                 { nameof(Restaurant.Address.City), r => r.Address.City },
             };
 
-            var selectedColumn = columnsSelector[sortBy];
+            var selectedColumn = columnsSelector[sortBy.FirstCharToUpper()];
 
             collection = sortDirection == SortDirection.ASC
                 ? collection.OrderBy(selectedColumn)

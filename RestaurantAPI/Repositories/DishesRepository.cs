@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.ResourceParameters;
+using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Shared.Enums;
 using RestaurantAPI.Shared.PagedList;
@@ -26,6 +27,7 @@ namespace RestaurantAPI.Repositories
 
             var collection = _context.Dishes.Where(d => d.RestaurantId == restaurantId);
 
+            //filtering
             if (dishesResourceParameters.MaximumPrice != null)
             {
                 collection = collection.Where(d => d.Price <= dishesResourceParameters.MaximumPrice);
@@ -41,6 +43,7 @@ namespace RestaurantAPI.Repositories
 
             }
 
+            //sorting
             if (string.IsNullOrWhiteSpace(dishesResourceParameters.SortBy))
             {
                 //default sorting
@@ -51,6 +54,7 @@ namespace RestaurantAPI.Repositories
             //custom sorting
             collection = SortDishes(collection, dishesResourceParameters.SortBy, dishesResourceParameters.SortDirection);
 
+            //pagination
             return await PagedList<Dish>.ToPagedListAsync(collection,
                 dishesResourceParameters.PageNumber, dishesResourceParameters.PageSize);
 
@@ -69,7 +73,7 @@ namespace RestaurantAPI.Repositories
                 { nameof(Dish.Description), d => d.Description },
             };
 
-            var selectedColumn = columnsSelector[sortBy];
+            var selectedColumn = columnsSelector[sortBy.FirstCharToUpper()];
 
             collection = sortDirection == SortDirection.ASC
                 ? collection.OrderBy(selectedColumn)
