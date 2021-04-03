@@ -28,7 +28,9 @@ namespace RestaurantAPI.Repositories
             }
 
             if (restaurantsResourceParameters.HasDelivery == null
-                && string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery))
+                && string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery)
+                && (restaurantsResourceParameters.PageSize == 0
+                    || restaurantsResourceParameters.PageNumber == 0))
             {
                 return await GetAllAsync();
             }
@@ -51,7 +53,14 @@ namespace RestaurantAPI.Repositories
                     r.Address.City.Contains(searchQuery));
             }
 
-            return await collection.ToListAsync();
+            if (!(restaurantsResourceParameters.PageSize == 0 && restaurantsResourceParameters.PageNumber == 0))
+            {
+                return await collection.Skip(restaurantsResourceParameters.PageSize * (restaurantsResourceParameters.PageNumber - 1))
+                    .Take(restaurantsResourceParameters.PageSize)
+                    .ToListAsync();
+            }
+
+           return await collection.ToListAsync();
 
         }
 

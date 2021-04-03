@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
+using RestaurantAPI.Data.Results;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 
@@ -29,11 +30,13 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
+        public async Task<ActionResult<PagedResult<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
         {
             var restaurants = await _restaurantsRepository.GetAllAsync(restaurantsResourceParameters);
 
-            return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
+            var restaurantsDtos = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
+
+            return Ok(new PagedResult<RestaurantDto>(restaurantsDtos, restaurantsResourceParameters.PageSize, restaurantsResourceParameters.PageNumber));
         }
 
         [HttpGet("{id}")]
