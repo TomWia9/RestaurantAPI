@@ -43,10 +43,15 @@ namespace RestaurantAPI.Repositories
                     r.Address.City.Contains(searchQuery));
             }
 
-            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.SortBy))
+            if (string.IsNullOrWhiteSpace(restaurantsResourceParameters.SortBy))
             {
-               collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy, restaurantsResourceParameters.SortDirection);
+                //default sorting
+                return await PagedList<Restaurant>.ToPagedListAsync(collection.OrderBy(r => r.Name),
+                    restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
             }
+
+            //custom sorting
+            collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy, restaurantsResourceParameters.SortDirection);
 
             return await PagedList<Restaurant>.ToPagedListAsync(collection,
                 restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);

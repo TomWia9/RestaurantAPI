@@ -41,13 +41,19 @@ namespace RestaurantAPI.Repositories
 
             }
 
-            if (!string.IsNullOrWhiteSpace(dishesResourceParameters.SortBy))
+            if (string.IsNullOrWhiteSpace(dishesResourceParameters.SortBy))
             {
-                collection = SortDishes(collection, dishesResourceParameters.SortBy, dishesResourceParameters.SortDirection);
+                //default sorting
+                return await PagedList<Dish>.ToPagedListAsync(collection.OrderBy(d => d.Name),
+                    dishesResourceParameters.PageNumber, dishesResourceParameters.PageSize);
             }
+              
+            //custom sorting
+            collection = SortDishes(collection, dishesResourceParameters.SortBy, dishesResourceParameters.SortDirection);
 
             return await PagedList<Dish>.ToPagedListAsync(collection,
                 dishesResourceParameters.PageNumber, dishesResourceParameters.PageSize);
+
         }
 
         public async Task<Dish> GetAsync(int restaurantId, int id)
