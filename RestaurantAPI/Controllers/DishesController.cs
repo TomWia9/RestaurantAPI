@@ -6,7 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 
@@ -27,9 +29,21 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId)
+        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
-            var dishes = await _dishesRepository.GetAllAsync(restaurantId);
+            var dishes = await _dishesRepository.GetAllAsync(restaurantId, dishesResourceParameters);
+
+            var metadata = new
+            {
+                dishes.TotalCount,
+                dishes.PagesSize,
+                dishes.CurrentPage,
+                dishes.TotalPages,
+                dishes.HasNext,
+                dishes.HasPrevious,
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
             return Ok(_mapper.Map<IEnumerable<DishDto>>(dishes));
         }
