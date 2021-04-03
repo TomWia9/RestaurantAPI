@@ -31,6 +31,11 @@ namespace RestaurantAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
+            if (!await _dishesRepository.RestaurantExists(restaurantId))
+            {
+                return NotFound();
+            }
+
             var dishes = await _dishesRepository.GetAllAsync(restaurantId, dishesResourceParameters);
 
             var metadata = new
@@ -51,6 +56,11 @@ namespace RestaurantAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DishDto>> GetDish(int restaurantId, int id)
         {
+            if (!await _dishesRepository.RestaurantExists(restaurantId))
+            {
+                return NotFound();
+            }
+
             var dish = await _dishesRepository.GetAsync(restaurantId, id);
 
             if (dish == null)
@@ -65,6 +75,11 @@ namespace RestaurantAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<DishDto>> NewDish(int restaurantId, DishForCreationDto dish)
         {
+            if (!await _dishesRepository.RestaurantExists(restaurantId))
+            {
+                return NotFound();
+            }
+
             var newDish = _mapper.Map<Dish>(dish);
             newDish.RestaurantId = restaurantId;
 
@@ -82,6 +97,11 @@ namespace RestaurantAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
         {
+            if (!await _dishesRepository.RestaurantExists(restaurantId))
+            {
+                return NotFound();
+            }
+
             var dishFromRepo = await _dishesRepository.GetAsync(restaurantId, id);
 
             if (dishFromRepo == null)
@@ -106,6 +126,11 @@ namespace RestaurantAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId, int id)
         {
+            if (!await _dishesRepository.RestaurantExists(restaurantId))
+            {
+                return NotFound();
+            }
+
             var dish = await _dishesRepository.GetAsync(restaurantId, id);
 
             if (dish == null)

@@ -12,6 +12,7 @@ namespace RestaurantAPI.Repositories
     {
         Task<PagedList<Dish>> GetAllAsync(int restaurantId, DishesResourceParameters dishesResourceParameters);
         Task<Dish> GetAsync(int restaurantId, int id);
-      
+        Task<bool> RestaurantExists(int restaurantId);
+
     }
 }
