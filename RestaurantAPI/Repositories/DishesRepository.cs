@@ -65,6 +65,11 @@ namespace RestaurantAPI.Repositories
             return await _context.Dishes.FirstOrDefaultAsync(d => d.RestaurantId == restaurantId && d.Id == id);
         }
 
+        public async Task<bool> RestaurantExists(int restaurantId)
+        {
+            return await _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
+        }
+
         private static IQueryable<Dish> SortDishes(IQueryable<Dish> collection, string sortBy, SortDirection sortDirection)
         {
             var columnsSelector = new Dictionary<string, Expression<Func<Dish, object>>>
