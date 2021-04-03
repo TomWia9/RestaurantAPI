@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Shared.Enums;
 using RestaurantAPI.Shared.PagedList;
 
 namespace RestaurantAPI.Repositories
@@ -41,7 +43,12 @@ namespace RestaurantAPI.Repositories
                     r.Address.City.Contains(searchQuery));
             }
 
-            return await PagedList<Restaurant>.ToPagedListAsync(collection.OrderBy(r => r.Name),
+            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.SortBy))
+            {
+               collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy, restaurantsResourceParameters.SortDirection);
+            }
+
+            return await PagedList<Restaurant>.ToPagedListAsync(collection,
                 restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
 
         }
@@ -49,6 +56,25 @@ namespace RestaurantAPI.Repositories
         public async Task<Restaurant> GetAsync(int id)
         {
             return await _context.Restaurants.Include(r => r.Address).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        private static IQueryable<Restaurant> SortRestaurants(IQueryable<Restaurant> collection, string sortBy, SortDirection sortDirection)
+        {
+            var columnsSelector = new Dictionary<string, Expression<Func<Restaurant, object>>>
+            {
+                { nameof(Restaurant.Name), r => r.Name },
+                { nameof(Restaurant.Description), r => r.Description },
+                { nameof(Restaurant.Category), r => r.Category },
+                { nameof(Restaurant.Address.City), r => r.Address.City },
+            };
+
+            var selectedColumn = columnsSelector[sortBy];
+
+            collection = sortDirection == SortDirection.ASC
+                ? collection.OrderBy(selectedColumn)
+                : collection.OrderByDescending(selectedColumn);
+
+            return collection;
         }
 
     }
