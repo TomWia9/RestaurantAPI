@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.Requests;
+using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Extensions;
 using RestaurantAPI.Models;
 using RestaurantAPI.Models.Auth;
@@ -57,6 +58,8 @@ namespace RestaurantAPI
             services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
             services.AddTransient<IValidator<UserSignUpRequest>, UserSignUpRequestValidator>();
             services.AddTransient<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
+            services.AddTransient<IValidator<RestaurantsResourceParameters>, RestaurantQueryValidator>();
+            services.AddTransient<IValidator<DishesResourceParameters>, DishQueryValidator>();
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
