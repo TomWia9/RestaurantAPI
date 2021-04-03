@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Shared.PagedList;
 
 namespace RestaurantAPI.Repositories
 {
@@ -15,24 +16,16 @@ namespace RestaurantAPI.Repositories
         {
         }
 
-        public async Task<IEnumerable<Restaurant>> GetAllAsync()
-        {
-            return await _context.Restaurants.Include(r => r.Address).ToListAsync();
-        }
+        //public async Task<IEnumerable<Restaurant>> GetAllAsync()
+        //{
+        //    return await _context.Restaurants.Include(r => r.Address).ToListAsync();
+        //}
 
-        public async Task<IEnumerable<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters)
+        public async Task<PagedList<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters)
         {
             if (restaurantsResourceParameters == null)
             {
                 throw new ArgumentNullException(nameof(restaurantsResourceParameters));
-            }
-
-            if (restaurantsResourceParameters.HasDelivery == null
-                && string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery)
-                && (restaurantsResourceParameters.PageSize == 0
-                    || restaurantsResourceParameters.PageNumber == 0))
-            {
-                return await GetAllAsync();
             }
 
             var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
@@ -53,14 +46,8 @@ namespace RestaurantAPI.Repositories
                     r.Address.City.Contains(searchQuery));
             }
 
-            if (!(restaurantsResourceParameters.PageSize == 0 && restaurantsResourceParameters.PageNumber == 0))
-            {
-                return await collection.Skip(restaurantsResourceParameters.PageSize * (restaurantsResourceParameters.PageNumber - 1))
-                    .Take(restaurantsResourceParameters.PageSize)
-                    .ToListAsync();
-            }
-
-           return await collection.ToListAsync();
+            return await PagedList<Restaurant>.ToPagedListAsync(collection.OrderBy(r => r.Name),
+                restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
 
         }
 

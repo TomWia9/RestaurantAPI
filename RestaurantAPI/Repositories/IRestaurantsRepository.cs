@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Shared.PagedList;
 
 namespace RestaurantAPI.Repositories
 {
     public interface IRestaurantsRepository : IGenericRepository<Restaurant>
     {
-        Task<IEnumerable<Restaurant>> GetAllAsync();
-        Task<IEnumerable<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters);
+        //Task<IEnumerable<Restaurant>> GetAllAsync();
+        Task<PagedList<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters);
         Task<Restaurant> GetAsync(int id);
     }
 }

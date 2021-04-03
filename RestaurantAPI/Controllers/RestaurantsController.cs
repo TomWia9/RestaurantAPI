@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
-using RestaurantAPI.Data.Results;
 using RestaurantAPI.Models;
 using RestaurantAPI.Repositories;
 
@@ -30,13 +30,25 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedResult<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
+        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
         {
             var restaurants = await _restaurantsRepository.GetAllAsync(restaurantsResourceParameters);
 
             var restaurantsDtos = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
 
-            return Ok(new PagedResult<RestaurantDto>(restaurantsDtos, restaurantsResourceParameters.PageSize, restaurantsResourceParameters.PageNumber));
+            var metadata = new
+            {
+                restaurants.TotalCount,
+                restaurants.PagesSize,
+                restaurants.CurrentPage,
+                restaurants.TotalPages,
+                restaurants.HasNext,
+                restaurants.HasPrevious,
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return Ok(restaurantsDtos);
         }
 
         [HttpGet("{id}")]
