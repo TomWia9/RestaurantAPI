@@ -11,7 +11,6 @@ namespace RestaurantAPI.Repositories
 {
     public interface IRestaurantsRepository : IGenericRepository<Restaurant>
     {
-        //Task<IEnumerable<Restaurant>> GetAllAsync();
         Task<PagedList<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters);
         Task<Restaurant> GetAsync(int id);
     }

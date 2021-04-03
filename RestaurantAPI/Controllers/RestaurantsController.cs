@@ -34,8 +34,6 @@ namespace RestaurantAPI.Controllers
         {
             var restaurants = await _restaurantsRepository.GetAllAsync(restaurantsResourceParameters);
 
-            var restaurantsDtos = _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
-
             var metadata = new
             {
                 restaurants.TotalCount,
@@ -48,7 +46,7 @@ namespace RestaurantAPI.Controllers
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-            return Ok(restaurantsDtos);
+            return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
         }
 
         [HttpGet("{id}")]

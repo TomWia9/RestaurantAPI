@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Shared.PagedList;
 
 namespace RestaurantAPI.Repositories
 {
@@ -19,17 +20,11 @@ namespace RestaurantAPI.Repositories
             return await _context.Dishes.Where(d => d.RestaurantId == restaurantId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Dish>> GetAllAsync(int restaurantId, DishesResourceParameters dishesResourceParameters)
+        public async Task<PagedList<Dish>> GetAllAsync(int restaurantId, DishesResourceParameters dishesResourceParameters)
         {
             if (dishesResourceParameters == null)
             {
                 throw new ArgumentNullException(nameof(dishesResourceParameters));
-            }
-
-            if (dishesResourceParameters.MaximumPrice == null
-                && string.IsNullOrWhiteSpace(dishesResourceParameters.SearchQuery))
-            {
-                return await GetAllAsync(restaurantId);
             }
 
             var collection = _context.Dishes.Where(d => d.RestaurantId == restaurantId);
@@ -49,7 +44,8 @@ namespace RestaurantAPI.Repositories
 
             }
 
-            return await collection.ToListAsync();
+            return await PagedList<Dish>.ToPagedListAsync(collection.OrderBy(r => r.Name),
+                dishesResourceParameters.PageNumber, dishesResourceParameters.PageSize);
         }
 
         public async Task<Dish> GetAsync(int restaurantId, int id)

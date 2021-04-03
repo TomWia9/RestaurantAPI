@@ -16,11 +16,6 @@ namespace RestaurantAPI.Repositories
         {
         }
 
-        //public async Task<IEnumerable<Restaurant>> GetAllAsync()
-        //{
-        //    return await _context.Restaurants.Include(r => r.Address).ToListAsync();
-        //}
-
         public async Task<PagedList<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters)
         {
             if (restaurantsResourceParameters == null)
