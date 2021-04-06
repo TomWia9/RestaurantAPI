@@ -94,6 +94,8 @@ namespace RestaurantAPI
         {
             seeder.Seed();
 
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
