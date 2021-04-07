@@ -34,5 +34,23 @@ namespace RestaurantAPI.Controllers
 
             return File(fileContents, contentType, fileName);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length <= 0) return BadRequest();
+
+            var rootPath = Directory.GetCurrentDirectory();
+            var fileName = file.FileName;
+            var fullPath = $"{rootPath}/Files/{fileName}";
+
+            await using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok();
+
+        }
     }
 }
