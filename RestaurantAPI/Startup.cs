@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
@@ -83,6 +84,8 @@ namespace RestaurantAPI
             {
                 options.ValidatorOptions.LanguageManager.Enabled = false;
             });
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddControllers();
 
