@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RestaurantAPI.Commands;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
@@ -17,7 +18,7 @@ using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
@@ -88,15 +89,13 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
+        public async Task<ActionResult<RestaurantDto>> PostRestaurant(CreateRestaurantCommand command)
         {
-            var newRestaurant = _mapper.Map<Restaurant>(restaurant);
+            var result = await _mediator.Send(command);
 
-            await _restaurantsRepository.AddAsync(newRestaurant);
-
-            if (await _restaurantsRepository.SaveChangesAsync())
+            if (result != null)
             {
-                return CreatedAtAction("GetRestaurant", new { id = newRestaurant.Id }, _mapper.Map<RestaurantDto>(newRestaurant));
+                return CreatedAtAction("GetRestaurant", new { id = result.Id }, result);
             }
 
             return BadRequest();
