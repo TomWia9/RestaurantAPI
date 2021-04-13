@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Queries;
 using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
@@ -22,44 +24,29 @@ namespace RestaurantAPI.Controllers
     {
         private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMapper mapper)
+        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMapper mapper, IMediator mediator)
         {
             _restaurantsRepository = restaurantsRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
         {
-            var restaurants = await _restaurantsRepository.GetAllAsync(restaurantsResourceParameters);
-
-            var metadata = new
-            {
-                restaurants.TotalCount,
-                restaurants.PagesSize,
-                restaurants.CurrentPage,
-                restaurants.TotalPages,
-                restaurants.HasNext,
-                restaurants.HasPrevious,
-            };
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-
-            return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
+            var query = new GetAllRestaurantsQuery(restaurantsResourceParameters);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
-            var restaurant = await _restaurantsRepository.GetAsync(id);
-
-            if (restaurant == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<RestaurantDto>(restaurant));
+            var query = new GetRestaurantQuery(id);
+            var result = await _mediator.Send(query);
+            return result != null ? Ok(result) : NotFound();
         }
 
         [Authorize(Roles = "Administrator")]
