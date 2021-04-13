@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using MediatR;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
+using RestaurantAPI.Shared.PagedList;
 
 namespace RestaurantAPI.Queries
 {
-    public class GetAllRestaurantsQuery : IRequest<IEnumerable<RestaurantDto>>
+    public class GetAllRestaurantsQuery : IRequest<PagedList<RestaurantDto>>
     {
         public RestaurantsResourceParameters RestaurantsResourceParameters { get; set; }
 

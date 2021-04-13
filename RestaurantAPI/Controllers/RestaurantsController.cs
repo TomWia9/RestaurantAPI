@@ -17,7 +17,7 @@ using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
@@ -38,6 +38,19 @@ namespace RestaurantAPI.Controllers
         {
             var query = new GetAllRestaurantsQuery(restaurantsResourceParameters);
             var result = await _mediator.Send(query);
+
+            var metadata = new
+            {
+                result.TotalCount,
+                result.PagesSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious,
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
             return Ok(result);
         }
 
