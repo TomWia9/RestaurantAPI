@@ -80,21 +80,8 @@ namespace RestaurantAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {
-            var restaurant = await _restaurantsRepository.GetAsync(id);
-
-            if (restaurant == null)
-            {
-                return NotFound();
-            }
-
-            _restaurantsRepository.Delete(restaurant);
-
-            if (await _restaurantsRepository.SaveChangesAsync())
-            {
-                return NoContent();
-            }
-
-            return BadRequest();
+            await _mediator.Send(new DeleteRestaurantCommand(id));
+            return NoContent();
         }
     }
 }
