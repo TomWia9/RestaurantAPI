@@ -15,6 +15,7 @@ using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 using RestaurantAPI.Queries;
 using RestaurantAPI.Repositories;
+using RestaurantAPI.Shared.Events;
 
 namespace RestaurantAPI.Controllers
 {
@@ -67,24 +68,14 @@ namespace RestaurantAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
         {
-            var restaurantFromRepo = await _restaurantsRepository.GetAsync(id);
+            var result = await _mediator.Send(new UpdateRestaurantCommand(id, restaurant));
 
-            if (restaurantFromRepo == null)
+            return result switch
             {
-                return NotFound();
-            }
-
-            _mapper.Map(restaurant, restaurantFromRepo);
-
-            _restaurantsRepository.Update(restaurantFromRepo);
-
-            if(await _restaurantsRepository.SaveChangesAsync())
-            {
-                return NoContent();
-            }
-
-            return BadRequest();
-
+                RestaurantNotFoundEvent => NotFound(),
+                RestaurantUpdatedEvent => NoContent(),
+                _ => BadRequest()
+            };
         }
 
         [Authorize(Roles = "Administrator")]
