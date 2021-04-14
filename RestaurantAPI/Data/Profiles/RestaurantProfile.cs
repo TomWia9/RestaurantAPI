@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using RestaurantAPI.Commands;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Models;
 
@@ -17,7 +16,6 @@ namespace RestaurantAPI.Data.Profiles
                 .ForMember(a => a.Id, opt => opt.Ignore());
             CreateMap<Address, AddressDto>();
             CreateMap<Restaurant, RestaurantDto>();
-            CreateMap<CreateRestaurantCommand, Restaurant>();
             CreateMap<RestaurantForCreationDto, Restaurant>();
             CreateMap<RestaurantForUpdateDto, Restaurant>();
             CreateMap<Restaurant, RestaurantForUpdateDto>();

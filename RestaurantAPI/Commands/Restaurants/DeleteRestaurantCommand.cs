@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 
-namespace RestaurantAPI.Commands
+namespace RestaurantAPI.Commands.Restaurants
 {
     public class DeleteRestaurantCommand : IRequest
     {

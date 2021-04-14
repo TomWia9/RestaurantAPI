@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using RestaurantAPI.Commands;
+using RestaurantAPI.Commands.Restaurants;
 using RestaurantAPI.Exceptions;
 using RestaurantAPI.Repositories;
 
-namespace RestaurantAPI.Handlers
+namespace RestaurantAPI.Handlers.Restaurants
 {
     public class UpdateRestaurantHandler : IRequestHandler<UpdateRestaurantCommand>
     {

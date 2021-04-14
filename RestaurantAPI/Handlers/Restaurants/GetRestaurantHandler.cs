@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Exceptions;
 using RestaurantAPI.Queries;
+using RestaurantAPI.Queries.Restaurants;
 using RestaurantAPI.Repositories;
 
-namespace RestaurantAPI.Handlers
+namespace RestaurantAPI.Handlers.Restaurants
 {
     public class GetRestaurantHandler : IRequestHandler<GetRestaurantQuery, RestaurantDto>
     {

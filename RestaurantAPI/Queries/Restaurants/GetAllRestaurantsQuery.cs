@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Shared.PagedList;
 
-namespace RestaurantAPI.Queries
+namespace RestaurantAPI.Queries.Restaurants
 {
     public class GetAllRestaurantsQuery : IRequest<PagedList<RestaurantDto>>
     {

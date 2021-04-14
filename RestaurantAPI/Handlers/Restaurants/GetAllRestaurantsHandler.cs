@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Newtonsoft.Json;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Queries;
+using RestaurantAPI.Queries.Restaurants;
 using RestaurantAPI.Repositories;
 using RestaurantAPI.Shared.PagedList;
 
-namespace RestaurantAPI.Handlers
+namespace RestaurantAPI.Handlers.Restaurants
 {
     public class GetAllRestaurantsHandler : IRequestHandler<GetAllRestaurantsQuery, PagedList<RestaurantDto>>
     {

@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RestaurantAPI.Commands;
+using RestaurantAPI.Commands.Restaurants;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 using RestaurantAPI.Queries;
+using RestaurantAPI.Queries.Restaurants;
 using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
@@ -33,8 +35,7 @@ namespace RestaurantAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
         {
-            var query = new GetAllRestaurantsQuery(restaurantsResourceParameters);
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new GetAllRestaurantsQuery(restaurantsResourceParameters));
 
             var metadata = new
             {
