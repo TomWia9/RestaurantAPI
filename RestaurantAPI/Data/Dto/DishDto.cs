@@ -7,10 +7,10 @@ namespace RestaurantAPI.Data.Dto
 {
     public class DishDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public int RestaurantId { get; set; }
+        public Guid RestaurantId { get; set; }
     }
 }
