@@ -17,19 +17,15 @@ using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/Restaurants/{restaurantId}/[controller]")]
     [ApiController]
     public class DishesController : ControllerBase
     {
-        private readonly IDishesRepository _dishesRepository;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public DishesController(IDishesRepository dishesRepository, IMapper mapper, IMediator mediator)
+        public DishesController(IMediator mediator)
         {
-            _dishesRepository = dishesRepository;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -60,7 +56,7 @@ namespace RestaurantAPI.Controllers
             return Ok(result);
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<DishDto>> NewDish(int restaurantId, DishForCreationDto dish)
         {
@@ -68,7 +64,7 @@ namespace RestaurantAPI.Controllers
             return CreatedAtAction("GetDish", new {restaurantId, id = result.Id}, result);
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
         {
@@ -76,31 +72,12 @@ namespace RestaurantAPI.Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId, int id)
         {
-            if (!await _dishesRepository.RestaurantExists(restaurantId))
-            {
-                return NotFound();
-            }
-
-            var dish = await _dishesRepository.GetAsync(restaurantId, id);
-
-            if (dish == null)
-            {
-                return NotFound();
-            }
-
-            _dishesRepository.Delete(dish);
-
-            if (await _dishesRepository.SaveChangesAsync())
-            {
-                return NoContent();
-            }
-
-            return BadRequest();
-
+            await _mediator.Send(new DeleteDishCommand(restaurantId, id));
+            return NoContent();
         }
     }
 }
