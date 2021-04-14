@@ -23,12 +23,10 @@ namespace RestaurantAPI.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMediator _mediator;
 
-        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMediator mediator)
+        public RestaurantsController(IMediator mediator)
         {
-            _restaurantsRepository = restaurantsRepository;
             _mediator = mediator;
         }
 
