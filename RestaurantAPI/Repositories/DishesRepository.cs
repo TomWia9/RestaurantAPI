@@ -18,7 +18,7 @@ namespace RestaurantAPI.Repositories
         {
         }
 
-        public async Task<PagedList<Dish>> GetAllAsync(int restaurantId, DishesResourceParameters dishesResourceParameters)
+        public async Task<PagedList<Dish>> GetAllAsync(Guid restaurantId, DishesResourceParameters dishesResourceParameters)
         {
             if (dishesResourceParameters == null)
             {
@@ -60,12 +60,12 @@ namespace RestaurantAPI.Repositories
 
         }
 
-        public async Task<Dish> GetAsync(int restaurantId, int id)
+        public async Task<Dish> GetAsync(Guid restaurantId, Guid id)
         {
             return await _context.Dishes.FirstOrDefaultAsync(d => d.RestaurantId == restaurantId && d.Id == id);
         }
 
-        public async Task<bool> RestaurantExists(int restaurantId)
+        public async Task<bool> RestaurantExists(Guid restaurantId)
         {
             return await _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
         }

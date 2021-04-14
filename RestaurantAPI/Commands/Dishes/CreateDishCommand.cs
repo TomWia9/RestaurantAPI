@@ -10,9 +10,9 @@ namespace RestaurantAPI.Commands.Dishes
 {
     public class CreateDishCommand : IRequest<DishDto>
     {
-        public int RestaurantId { get; set; }
+        public Guid RestaurantId { get; set; }
 
-        public CreateDishCommand(int restaurantId, DishForCreationDto dishForCreation)
+        public CreateDishCommand(Guid restaurantId, DishForCreationDto dishForCreation)
         {
             DishForCreation = dishForCreation;
             RestaurantId = restaurantId;

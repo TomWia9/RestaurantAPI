@@ -10,11 +10,11 @@ namespace RestaurantAPI.Commands.Dishes
 {
     public class UpdateDishCommand : IRequest
     {
-        public int RestaurantId { get; set; }
-        public int DishId { get; set; }
+        public Guid RestaurantId { get; set; }
+        public Guid DishId { get; set; }
         public DishForUpdateDto DishForUpdate { get; set; }
 
-        public UpdateDishCommand(int restaurantId, int dishId, DishForUpdateDto dishForUpdate)
+        public UpdateDishCommand(Guid restaurantId, Guid dishId, DishForUpdateDto dishForUpdate)
         {
             RestaurantId = restaurantId;
             DishId = dishId;

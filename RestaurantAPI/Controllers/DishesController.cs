@@ -30,7 +30,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
+        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(Guid restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
             var result = await _mediator.Send(new GetAllDishesQuery(restaurantId, dishesResourceParameters));
 
@@ -50,7 +50,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DishDto>> GetDish(int restaurantId, int id)
+        public async Task<ActionResult<DishDto>> GetDish(Guid restaurantId, Guid id)
         {
             var result = await _mediator.Send(new GetDishQuery(restaurantId, id));
             return Ok(result);
@@ -58,7 +58,7 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public async Task<ActionResult<DishDto>> NewDish(int restaurantId, DishForCreationDto dish)
+        public async Task<ActionResult<DishDto>> NewDish(Guid restaurantId, DishForCreationDto dish)
         {
             var result = await _mediator.Send(new CreateDishCommand(restaurantId, dish));
             return CreatedAtAction("GetDish", new {restaurantId, id = result.Id}, result);
@@ -66,7 +66,7 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
+        public async Task<IActionResult> PutDish(Guid restaurantId, Guid id, DishForUpdateDto dish)
         {
             await _mediator.Send(new UpdateDishCommand(restaurantId, id, dish));
             return NoContent();
@@ -74,7 +74,7 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRestaurant(int restaurantId, int id)
+        public async Task<IActionResult> DeleteRestaurant(Guid restaurantId, Guid id)
         {
             await _mediator.Send(new DeleteDishCommand(restaurantId, id));
             return NoContent();
