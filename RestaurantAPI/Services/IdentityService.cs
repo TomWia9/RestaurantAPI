@@ -42,7 +42,6 @@ namespace RestaurantAPI.Services
            {
                return new AuthenticationResponse()
                 {
-                    Success = false,
                     ErrorMessages = createdUserResult.Errors.Select(e => e.Description)
                 }; 
            }
@@ -53,10 +52,9 @@ namespace RestaurantAPI.Services
            {
                return new AuthenticationResponse()
                {
-                   Success = false,
                    ErrorMessages = addedRoleResult.Errors.Select(e => e.Description)
                };
-            }
+           }
 
            return await GenerateAuthenticationResponseWithTokenAsync(newUser);
 
@@ -70,7 +68,6 @@ namespace RestaurantAPI.Services
             {
                 return new AuthenticationResponse()
                 {
-                    Success = false,
                     ErrorMessages = new List<string> { "User not found" }
                 };
             }
@@ -81,7 +78,6 @@ namespace RestaurantAPI.Services
             {
                 return new AuthenticationResponse()
                 {
-                    Success = false,
                     ErrorMessages = new List<string> {"Login or password incorrect"}
                 };
             }
@@ -117,8 +113,6 @@ namespace RestaurantAPI.Services
 
             return new AuthenticationResponse()
             {
-                Email = user.Email,
-                Success = true,
                 Token = tokenHandler.WriteToken(token)
             };
         }

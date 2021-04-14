@@ -26,7 +26,7 @@ namespace RestaurantAPI.Handlers.Auth
         {
             var result = await _identityService.Register(request.UserSignUpRequest);
 
-            if (!result.Success)
+            if (result.ErrorMessages.Any())
             {
                 throw new BadRequestException(string.Join(Environment.NewLine, result.ErrorMessages));
             }
