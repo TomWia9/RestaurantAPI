@@ -8,6 +8,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using RestaurantAPI.Commands.Dishes;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
@@ -59,29 +60,15 @@ namespace RestaurantAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<DishDto>> NewDish(int restaurantId, DishForCreationDto dish)
         {
-            if (!await _dishesRepository.RestaurantExists(restaurantId))
-            {
-                return NotFound();
-            }
-
-            var newDish = _mapper.Map<Dish>(dish);
-            newDish.RestaurantId = restaurantId;
-
-            await _dishesRepository.AddAsync(newDish);
-
-            if (await _dishesRepository.SaveChangesAsync())
-            {
-                return CreatedAtAction("GetDish", new {restaurantId, id = newDish.Id}, _mapper.Map<DishDto>(newDish));
-            }
-
-            return BadRequest();
+            var result = await _mediator.Send(new CreateDishCommand(restaurantId, dish));
+            return CreatedAtAction("GetDish", new {restaurantId, id = result.Id}, result);
         }
 
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
         {
@@ -110,7 +97,7 @@ namespace RestaurantAPI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId, int id)
         {
