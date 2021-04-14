@@ -12,10 +12,10 @@ namespace RestaurantAPI.Queries.Dishes
 {
     public class GetAllDishesQuery : IRequest<PagedList<DishDto>>
     {
-        public int RestaurantId { get; set; }
+        public Guid RestaurantId { get; set; }
         public DishesResourceParameters DishesResourceParameters { get; set; }
 
-        public GetAllDishesQuery(int restaurantId, DishesResourceParameters dishesResourceParameters)
+        public GetAllDishesQuery(Guid restaurantId, DishesResourceParameters dishesResourceParameters)
         {
             RestaurantId = restaurantId;
             DishesResourceParameters = dishesResourceParameters;

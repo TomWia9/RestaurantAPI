@@ -10,10 +10,10 @@ namespace RestaurantAPI.Queries.Dishes
 {
     public class GetDishQuery : IRequest<DishDto>
     {
-        public int RestaurantId { get; set; }
-        public int DishId { get; set; }
+        public Guid RestaurantId { get; set; }
+        public Guid DishId { get; set; }
 
-        public GetDishQuery(int restaurantId, int dishId)
+        public GetDishQuery(Guid restaurantId, Guid dishId)
         {
             RestaurantId = restaurantId;
             DishId = dishId;

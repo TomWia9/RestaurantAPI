@@ -9,10 +9,10 @@ namespace RestaurantAPI.Commands.Dishes
 {
     public class DeleteDishCommand : IRequest
     {
-        public int RestaurantId { get; set; }
-        public int DishId { get; set; }
+        public Guid RestaurantId { get; set; }
+        public Guid DishId { get; set; }
 
-        public DeleteDishCommand(int restaurantId, int dishId)
+        public DeleteDishCommand(Guid restaurantId, Guid dishId)
         {
             RestaurantId = restaurantId;
             DishId = dishId;

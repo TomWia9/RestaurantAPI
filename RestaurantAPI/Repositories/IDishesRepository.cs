@@ -10,9 +10,9 @@ namespace RestaurantAPI.Repositories
 {
     public interface IDishesRepository : IGenericRepository<Dish>
     {
-        Task<PagedList<Dish>> GetAllAsync(int restaurantId, DishesResourceParameters dishesResourceParameters);
-        Task<Dish> GetAsync(int restaurantId, int id);
-        Task<bool> RestaurantExists(int restaurantId);
+        Task<PagedList<Dish>> GetAllAsync(Guid restaurantId, DishesResourceParameters dishesResourceParameters);
+        Task<Dish> GetAsync(Guid restaurantId, Guid id);
+        Task<bool> RestaurantExists(Guid restaurantId);
 
     }
 }

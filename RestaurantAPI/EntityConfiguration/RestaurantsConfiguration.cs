@@ -12,6 +12,8 @@ namespace RestaurantAPI.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Restaurant> builder)
         {
+            builder.HasKey(r => r.Id);
+
             builder.Property(r => r.Name)
                 .IsRequired()
                 .HasMaxLength(30);

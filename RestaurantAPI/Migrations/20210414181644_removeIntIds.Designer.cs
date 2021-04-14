@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210414181644_removeIntIds")]
+    partial class removeIntIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +124,7 @@ namespace RestaurantAPI.Migrations
 
             modelBuilder.Entity("RestaurantAPI.Models.Address", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("TAddress")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -136,16 +138,16 @@ namespace RestaurantAPI.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Street")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("TRestaurant")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("RestaurantId")
+                    b.HasKey("TAddress");
+
+                    b.HasIndex("TRestaurant")
                         .IsUnique();
 
                     b.ToTable("Addresses");
@@ -257,13 +259,16 @@ namespace RestaurantAPI.Migrations
 
             modelBuilder.Entity("RestaurantAPI.Models.Dish", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("TDish")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("FRestaurant")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -273,19 +278,19 @@ namespace RestaurantAPI.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<Guid>("RestaurantId")
+                    b.Property<Guid?>("RestaurantTRestaurant")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("TDish");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantTRestaurant");
 
                     b.ToTable("Dishes");
                 });
 
             modelBuilder.Entity("RestaurantAPI.Models.Restaurant", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("TRestaurant")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -316,7 +321,7 @@ namespace RestaurantAPI.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.HasKey("Id");
+                    b.HasKey("TRestaurant");
 
                     b.ToTable("Restaurants");
                 });
@@ -376,7 +381,7 @@ namespace RestaurantAPI.Migrations
                 {
                     b.HasOne("RestaurantAPI.Models.Restaurant", "Restaurant")
                         .WithOne("Address")
-                        .HasForeignKey("RestaurantAPI.Models.Address", "RestaurantId")
+                        .HasForeignKey("RestaurantAPI.Models.Address", "TRestaurant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -387,9 +392,8 @@ namespace RestaurantAPI.Migrations
                 {
                     b.HasOne("RestaurantAPI.Models.Restaurant", "Restaurant")
                         .WithMany("Dishes")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RestaurantTRestaurant")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Restaurant");
                 });

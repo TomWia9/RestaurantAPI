@@ -1,12 +1,13 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 
 namespace RestaurantAPI.Commands.Restaurants
 {
     public class DeleteRestaurantCommand : IRequest
     {
-        public int RestaurantId { get; set; }
+        public Guid RestaurantId { get; set; }
 
-        public DeleteRestaurantCommand(int id)
+        public DeleteRestaurantCommand(Guid id)
         {
             RestaurantId = id;
         }

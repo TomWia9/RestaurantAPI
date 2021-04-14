@@ -53,7 +53,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
+        public async Task<ActionResult<RestaurantDto>> GetRestaurant(Guid id)
         {
             var result = await _mediator.Send(new GetRestaurantQuery(id));
             return Ok(result);
@@ -61,7 +61,7 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
+        public async Task<IActionResult> PutRestaurant(Guid id, RestaurantForUpdateDto restaurant)
         {
             await _mediator.Send(new UpdateRestaurantCommand(id, restaurant));
             return NoContent();
@@ -77,7 +77,7 @@ namespace RestaurantAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRestaurant(int id)
+        public async Task<IActionResult> DeleteRestaurant(Guid id)
         {
             await _mediator.Send(new DeleteRestaurantCommand(id));
             return NoContent();
