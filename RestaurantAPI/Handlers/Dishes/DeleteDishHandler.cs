@@ -15,12 +15,10 @@ namespace RestaurantAPI.Handlers.Dishes
     public class DeleteDishHandler : IRequestHandler<DeleteDishCommand>
     {
         private readonly IDishesRepository _dishesRepository;
-        private readonly IMapper _mapper;
 
         public DeleteDishHandler(IDishesRepository dishesRepository, IMapper mapper)
         {
             _dishesRepository = dishesRepository;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteDishCommand request, CancellationToken cancellationToken)
