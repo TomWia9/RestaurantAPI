@@ -29,11 +29,7 @@ namespace RestaurantAPI.Handlers
             var newRestaurant = _mapper.Map<Restaurant>(request.RestaurantForCreation);
 
             await _restaurantsRepository.AddAsync(newRestaurant);
-
-            if (!await _restaurantsRepository.SaveChangesAsync())
-            {
-                return null;
-            }
+            await _restaurantsRepository.SaveChangesAsync();
 
             return _mapper.Map<RestaurantDto>(newRestaurant);
         }

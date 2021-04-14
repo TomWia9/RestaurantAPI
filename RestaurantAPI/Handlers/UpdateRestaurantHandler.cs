@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using RestaurantAPI.Commands;
+using RestaurantAPI.Exceptions;
 using RestaurantAPI.Repositories;
-using RestaurantAPI.Shared.Events;
 
 namespace RestaurantAPI.Handlers
 {
-    public class UpdateRestaurantHandler : IRequestHandler<UpdateRestaurantCommand, IEvent>
+    public class UpdateRestaurantHandler : IRequestHandler<UpdateRestaurantCommand>
     {
         private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
@@ -22,25 +22,22 @@ namespace RestaurantAPI.Handlers
             _mapper = mapper;
         }
 
-        public async Task<IEvent> Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
         {
             var restaurantFromRepo = await _restaurantsRepository.GetAsync(request.RestaurantId);
 
             if (restaurantFromRepo == null)
             {
-                return new RestaurantNotFoundEvent();
+                throw new NotFoundException();
             }
 
             _mapper.Map(request.RestaurantForUpdate, restaurantFromRepo);
 
             _restaurantsRepository.Update(restaurantFromRepo);
 
-            if(await _restaurantsRepository.SaveChangesAsync())
-            {
-                return new RestaurantUpdatedEvent();
-            }
+            await _restaurantsRepository.SaveChangesAsync();
 
-            return null;
+            return Unit.Value;
         }
     }
 }

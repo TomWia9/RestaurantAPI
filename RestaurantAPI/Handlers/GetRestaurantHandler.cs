@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using RestaurantAPI.Data.Dto;
+using RestaurantAPI.Exceptions;
 using RestaurantAPI.Queries;
 using RestaurantAPI.Repositories;
 
@@ -27,7 +28,12 @@ namespace RestaurantAPI.Handlers
         {
             var restaurant = await _restaurantsRepository.GetAsync(request.RestaurantId);
 
-            return restaurant == null ? null : _mapper.Map<RestaurantDto>(restaurant);
+            if (restaurant == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return _mapper.Map<RestaurantDto>(restaurant);
         }
     }
 }

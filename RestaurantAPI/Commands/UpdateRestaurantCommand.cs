@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using RestaurantAPI.Data.Dto;
-using RestaurantAPI.Shared.Events;
 
 namespace RestaurantAPI.Commands
 {
-    public class UpdateRestaurantCommand : RestaurantForManipulationDto, IRequest<IEvent>
+    public class UpdateRestaurantCommand : RestaurantForManipulationDto, IRequest
     {
         public int RestaurantId { get; set; }
         public RestaurantForUpdateDto RestaurantForUpdate { get; set; }

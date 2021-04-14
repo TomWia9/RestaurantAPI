@@ -15,11 +15,10 @@ using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
 using RestaurantAPI.Queries;
 using RestaurantAPI.Repositories;
-using RestaurantAPI.Shared.Events;
 
 namespace RestaurantAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
@@ -57,38 +56,24 @@ namespace RestaurantAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
-            var query = new GetRestaurantQuery(id);
-            var result = await _mediator.Send(query);
-            return result != null ? Ok(result) : NotFound();
+            var result = await _mediator.Send(new GetRestaurantQuery(id));
+            return Ok(result);
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, RestaurantForUpdateDto restaurant)
         {
-            var result = await _mediator.Send(new UpdateRestaurantCommand(id, restaurant));
-
-            return result switch
-            {
-                RestaurantNotFoundEvent => NotFound(),
-                RestaurantUpdatedEvent => NoContent(),
-                _ => BadRequest()
-            };
+            await _mediator.Send(new UpdateRestaurantCommand(id, restaurant));
+            return NoContent();
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
             var result = await _mediator.Send(new CreateRestaurantCommand(restaurant));
-
-            if (result != null)
-            {
-                return CreatedAtAction("GetRestaurant", new { id = result.Id }, result);
-            }
-
-            return BadRequest();
-
+            return CreatedAtAction("GetRestaurant", new { id = result.Id }, result);
         }
 
         [Authorize(Roles = "Administrator")]
