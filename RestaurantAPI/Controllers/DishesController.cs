@@ -55,19 +55,8 @@ namespace RestaurantAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DishDto>> GetDish(int restaurantId, int id)
         {
-            if (!await _dishesRepository.RestaurantExists(restaurantId))
-            {
-                return NotFound();
-            }
-
-            var dish = await _dishesRepository.GetAsync(restaurantId, id);
-
-            if (dish == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<DishDto>(dish));
+            var result = await _mediator.Send(new GetDishQuery(restaurantId, id));
+            return Ok(result);
         }
 
         [Authorize(Roles = "Administrator")]
