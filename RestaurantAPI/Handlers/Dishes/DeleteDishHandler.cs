@@ -16,7 +16,7 @@ namespace RestaurantAPI.Handlers.Dishes
     {
         private readonly IDishesRepository _dishesRepository;
 
-        public DeleteDishHandler(IDishesRepository dishesRepository, IMapper mapper)
+        public DeleteDishHandler(IDishesRepository dishesRepository)
         {
             _dishesRepository = dishesRepository;
         }
