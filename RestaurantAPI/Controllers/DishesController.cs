@@ -5,52 +5,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.Data.ResourceParameters;
 using RestaurantAPI.Models;
+using RestaurantAPI.Queries.Dishes;
 using RestaurantAPI.Repositories;
 
 namespace RestaurantAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/Restaurants/{restaurantId}/[controller]")]
     [ApiController]
     public class DishesController : ControllerBase
     {
         private readonly IDishesRepository _dishesRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public DishesController(IDishesRepository dishesRepository, IMapper mapper)
+        public DishesController(IDishesRepository dishesRepository, IMapper mapper, IMediator mediator)
         {
             _dishesRepository = dishesRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(int restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
-            if (!await _dishesRepository.RestaurantExists(restaurantId))
-            {
-                return NotFound();
-            }
-
-            var dishes = await _dishesRepository.GetAllAsync(restaurantId, dishesResourceParameters);
+            var result = await _mediator.Send(new GetAllDishesQuery(restaurantId, dishesResourceParameters));
 
             var metadata = new
             {
-                dishes.TotalCount,
-                dishes.PagesSize,
-                dishes.CurrentPage,
-                dishes.TotalPages,
-                dishes.HasNext,
-                dishes.HasPrevious,
+                result.TotalCount,
+                result.PagesSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious,
             };
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-            return Ok(_mapper.Map<IEnumerable<DishDto>>(dishes));
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
