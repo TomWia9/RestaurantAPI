@@ -25,9 +25,7 @@ namespace RestaurantAPI.Handlers.Restaurants
                 throw new NotFoundException();
             }
 
-            _restaurantsRepository.Delete(restaurant);
-
-            await _restaurantsRepository.SaveChangesAsync();
+            await _restaurantsRepository.DeleteAsync(restaurant);
 
             return Unit.Value;
         }

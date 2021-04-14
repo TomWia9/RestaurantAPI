@@ -25,7 +25,6 @@ namespace RestaurantAPI.Handlers.Restaurants
             var newRestaurant = _mapper.Map<Restaurant>(request.RestaurantForCreation);
 
             await _restaurantsRepository.AddAsync(newRestaurant);
-            await _restaurantsRepository.SaveChangesAsync();
 
             return _mapper.Map<RestaurantDto>(newRestaurant);
         }

@@ -18,21 +18,19 @@ namespace RestaurantAPI.Repositories
         public async Task AddAsync(T entity)
         {
             await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            //no implementation in this method
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
     }
 }

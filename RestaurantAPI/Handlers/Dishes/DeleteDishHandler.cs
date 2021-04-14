@@ -35,9 +35,7 @@ namespace RestaurantAPI.Handlers.Dishes
                 throw new NotFoundException();
             }
 
-            _dishesRepository.Delete(dish);
-
-            await _dishesRepository.SaveChangesAsync();
+            await _dishesRepository.DeleteAsync(dish);
 
             return Unit.Value;
         }

@@ -30,9 +30,7 @@ namespace RestaurantAPI.Handlers.Restaurants
 
             _mapper.Map(request.RestaurantForUpdate, restaurantFromRepo);
 
-            _restaurantsRepository.Update(restaurantFromRepo);
-
-            await _restaurantsRepository.SaveChangesAsync();
+            await _restaurantsRepository.UpdateAsync(restaurantFromRepo);
 
             return Unit.Value;
         }

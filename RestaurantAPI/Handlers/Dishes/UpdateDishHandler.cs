@@ -39,8 +39,7 @@ namespace RestaurantAPI.Handlers.Dishes
 
             _mapper.Map(request.DishForUpdate, dishFromRepo);
 
-            _dishesRepository.Update(dishFromRepo);
-            await _dishesRepository.SaveChangesAsync();
+            await _dishesRepository.UpdateAsync(dishFromRepo);
 
             return Unit.Value;
 

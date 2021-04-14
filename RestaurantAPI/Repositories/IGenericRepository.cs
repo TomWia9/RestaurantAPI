@@ -8,8 +8,7 @@ namespace RestaurantAPI.Repositories
     public interface IGenericRepository<in T> where T : class
     {
         Task AddAsync(T entity);
-        void Delete(T entity);
-        void Update(T entity);
-        Task<bool> SaveChangesAsync();
+        Task DeleteAsync(T entity);
+        Task UpdateAsync(T entity);
     }
 }

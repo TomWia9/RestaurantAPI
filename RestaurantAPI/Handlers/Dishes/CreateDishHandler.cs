@@ -36,7 +36,6 @@ namespace RestaurantAPI.Handlers.Dishes
             newDish.RestaurantId = request.RestaurantId;
 
             await _dishesRepository.AddAsync(newDish);
-            await _dishesRepository.SaveChangesAsync();
 
             return _mapper.Map<DishDto>(newDish);
 
