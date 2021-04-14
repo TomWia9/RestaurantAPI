@@ -72,29 +72,8 @@ namespace RestaurantAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDish(int restaurantId, int id, DishForUpdateDto dish)
         {
-            if (!await _dishesRepository.RestaurantExists(restaurantId))
-            {
-                return NotFound();
-            }
-
-            var dishFromRepo = await _dishesRepository.GetAsync(restaurantId, id);
-
-            if (dishFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(dish, dishFromRepo);
-
-            _dishesRepository.Update(dishFromRepo);
-
-            if (await _dishesRepository.SaveChangesAsync())
-            {
-                return NoContent();
-            }
-
-            return BadRequest();
-
+            await _mediator.Send(new UpdateDishCommand(restaurantId, id, dish));
+            return NoContent();
         }
 
         //[Authorize(Roles = "Administrator")]
