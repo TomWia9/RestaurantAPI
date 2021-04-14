@@ -26,7 +26,7 @@ namespace RestaurantAPI.Handlers
 
         public async Task<RestaurantDto> Handle(CreateRestaurantCommand request, CancellationToken cancellationToken)
         {
-            var newRestaurant = _mapper.Map<Restaurant>(request);
+            var newRestaurant = _mapper.Map<Restaurant>(request.RestaurantForCreation);
 
             await _restaurantsRepository.AddAsync(newRestaurant);
 

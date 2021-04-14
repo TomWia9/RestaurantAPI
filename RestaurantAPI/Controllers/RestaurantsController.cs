@@ -19,19 +19,17 @@ using RestaurantAPI.Shared.Events;
 
 namespace RestaurantAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantsRepository _restaurantsRepository;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMapper mapper, IMediator mediator)
+        public RestaurantsController(IRestaurantsRepository restaurantsRepository, IMediator mediator)
         {
             _restaurantsRepository = restaurantsRepository;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -78,11 +76,11 @@ namespace RestaurantAPI.Controllers
             };
         }
 
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpPost]
-        public async Task<ActionResult<RestaurantDto>> PostRestaurant(CreateRestaurantCommand command)
+        public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new CreateRestaurantCommand(restaurant));
 
             if (result != null)
             {

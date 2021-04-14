@@ -18,6 +18,7 @@ namespace RestaurantAPI.Data.Profiles
             CreateMap<Address, AddressDto>();
             CreateMap<Restaurant, RestaurantDto>();
             CreateMap<CreateRestaurantCommand, Restaurant>();
+            CreateMap<RestaurantForCreationDto, Restaurant>();
             CreateMap<RestaurantForUpdateDto, Restaurant>();
             CreateMap<Restaurant, RestaurantForUpdateDto>();
         }
