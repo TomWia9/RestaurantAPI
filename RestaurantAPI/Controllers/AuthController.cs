@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
+using RestaurantAPI.Commands.Auth;
 using RestaurantAPI.Data.Requests;
 using RestaurantAPI.Models.Auth;
 using RestaurantAPI.Services;
@@ -16,37 +18,25 @@ namespace RestaurantAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public AuthController(IIdentityService identityService)
+        public AuthController(IMediator mediator)
         {
-            _identityService = identityService;
+            _mediator = mediator;
         }
 
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(UserSignUpRequest userSignUpRequest)
         {
-            var result = await _identityService.Register(userSignUpRequest);
-
-            if (result.Success)
-            {
-                return Created(string.Empty, result);
-            }
-
-            return BadRequest(result.ErrorMessages);
+            var result = await _mediator.Send(new SignUpCommand(userSignUpRequest));
+            return Created(string.Empty, result);
         }
 
         [HttpPost("signIn")]
         public async Task<IActionResult> SignIn(UserLoginRequest userLoginRequest)
         {
-            var result = await _identityService.Login(userLoginRequest);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result.ErrorMessages);
+            var result = await _mediator.Send(new LoginCommand(userLoginRequest));
+            return Ok(result);
         }
     }
 }
