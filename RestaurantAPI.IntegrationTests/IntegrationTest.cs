@@ -47,13 +47,10 @@ namespace RestaurantAPI.IntegrationTests
 
         private async Task<string> GetJwtAsync()
         {
-            var response = await TestClient.PostAsJsonAsync("api/auth/signUp", new UserSignUpRequest()
+            var response = await TestClient.PostAsJsonAsync("api/auth/signin", new UserLoginRequest()
             {
-                Email = Guid.NewGuid() + "@test.com",
-                FirstName = "Test",
-                LastName = "Test",
-                Password = "Test123_",
-                ConfirmPassword = "Test123_"
+                Email = "admin@admin",
+                Password = "Admin123_",
 
             });
 
