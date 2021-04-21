@@ -93,6 +93,7 @@ namespace RestaurantAPI.Models
             {
                 new Restaurant()
                 {
+                    Id = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"),
                     Name = "KFC",
                     Category = "Fast Food",
                     Description =
@@ -123,6 +124,7 @@ namespace RestaurantAPI.Models
                 },
                 new Restaurant()
                 {
+                    Id = Guid.Parse("62694f89-9691-4464-88b8-2dcdb12a2d53"),
                     Name = "McDonald Szewska",
                     Category = "Fast Food",
                     Description =
