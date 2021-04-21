@@ -29,65 +29,65 @@ namespace RestaurantAPI.Models
 
             _logger.LogInformation("Connecting to database");
 
-            if (_context.Database.CanConnect())
+            if (!_context.Database.CanConnect()) return;
+
+            _logger.LogInformation("Connected to database");
+
+            if (_context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
             {
-                _logger.LogInformation("Connected to database");
-
-
                 var pendingMigrations = _context.Database.GetPendingMigrations();
 
                 if (pendingMigrations != null && pendingMigrations.Any())
                 {
                     _context.Database.Migrate();
                 }
-
-                if (!_context.Restaurants.Any())
-                {
-
-                    var restaurants = GetRestaurants();
-
-                    _context.Restaurants.AddRange(restaurants);
-                    _context.SaveChanges();
-                    _logger.LogInformation("Seeded restaurants");
-
-                }
-
-                if (!_roleManager.Roles.Any())
-                {
-                    _roleManager.CreateAsync(new Role()
-                    {
-                        Name = "User"
-                    }).Wait();
-
-                    _roleManager.CreateAsync(new Role()
-                    {
-                        Name = "Administrator"
-                    }).Wait();
-
-                    _logger.LogInformation("Seeded roles");
-
-                }
-
-                if (!_userManager.Users.Any())
-                {
-                    var newUser = new User()
-                    {
-                        Email = "admin@admin",
-                        UserName = "admin",
-                        FirstName = "admin",
-                        LastName = "admin"
-                    };
-
-                   _userManager.CreateAsync(newUser,"Admin123_").Wait();
-                   _userManager.AddToRoleAsync(newUser, "Administrator").Wait();
-
-                    _logger.LogInformation("Seeded user");
-
-                }
             }
+
+
+            if (!_context.Restaurants.Any())
+            {
+
+                var restaurants = GetRestaurants();
+
+                _context.Restaurants.AddRange(restaurants);
+                _context.SaveChanges();
+                _logger.LogInformation("Seeded restaurants");
+
+            }
+
+            if (!_roleManager.Roles.Any())
+            {
+                _roleManager.CreateAsync(new Role()
+                {
+                    Name = "User"
+                }).Wait();
+
+                _roleManager.CreateAsync(new Role()
+                {
+                    Name = "Administrator"
+                }).Wait();
+
+                _logger.LogInformation("Seeded roles");
+
+            }
+
+            if (_userManager.Users.Any()) return;
+
+            var newUser = new User()
+            {
+                Email = "admin@admin",
+                UserName = "admin",
+                FirstName = "admin",
+                LastName = "admin"
+            };
+
+            _userManager.CreateAsync(newUser,"Admin123_").Wait();
+            _userManager.AddToRoleAsync(newUser, "Administrator").Wait();
+
+            _logger.LogInformation("Seeded user");
         }
 
-        private IEnumerable<Restaurant> GetRestaurants()
+        private static IEnumerable<Restaurant> GetRestaurants()
         {
             var restaurants = new List<Restaurant>()
             {
