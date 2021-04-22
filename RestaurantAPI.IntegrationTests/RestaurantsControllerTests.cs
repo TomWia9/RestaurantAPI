@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RestaurantAPI.Data.Dto;
 using RestaurantAPI.IntegrationTests.Helpers;
@@ -17,14 +19,10 @@ using Xunit;
 
 namespace RestaurantAPI.IntegrationTests
 {
-    public class RestaurantsControllerTests : IClassFixture<CustomWebApplicationFactory>
-
+    public class RestaurantsControllerTests : IntegrationTest
     {
-        private readonly HttpClient _client;
-
-        public RestaurantsControllerTests(CustomWebApplicationFactory factory)
+        public RestaurantsControllerTests() : base("Server=localhost\\sqlexpress;Database=RestaurantsTests;Trusted_Connection=True;")
         {
-            _client = factory.CreateClient();
         }
 
         [Fact]
@@ -212,6 +210,20 @@ namespace RestaurantAPI.IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+        }
+        [Fact]
+        public async Task DeleteRestaurant_Should_Return204()
+        {
+            //Arrange
+            await AuthHelper.AuthenticateAsync(_client);
+            var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
+
+            //Act
+            var response = await _client.DeleteAsync($"api/restaurants/{restaurantId}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
         }
         [Fact]

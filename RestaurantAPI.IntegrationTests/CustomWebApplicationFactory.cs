@@ -18,8 +18,16 @@ namespace RestaurantAPI.IntegrationTests
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
     {
+        private readonly string _connectionString;
+
+        public CustomWebApplicationFactory(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            //replace database for each test class
             builder.ConfigureServices(services =>
             {
                 var descriptor = services.SingleOrDefault(
@@ -30,7 +38,7 @@ namespace RestaurantAPI.IntegrationTests
 
                 services.AddDbContext<RestaurantDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseSqlServer(_connectionString);
                 });
             });
         }
