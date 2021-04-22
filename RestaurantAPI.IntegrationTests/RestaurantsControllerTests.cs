@@ -21,7 +21,7 @@ namespace RestaurantAPI.IntegrationTests
 {
     public class RestaurantsControllerTests : IntegrationTest
     {
-        public RestaurantsControllerTests() : base("RestaurantsTests")
+        public RestaurantsControllerTests() : base("RestaurantsTests", true)
         {
         }
 

@@ -16,9 +16,9 @@ namespace RestaurantAPI.IntegrationTests
     {
         protected readonly HttpClient _client;
 
-        protected IntegrationTest(string connectionString)
+        protected IntegrationTest(string databaseName, bool authenticate)
         {
-            var factory = new CustomWebApplicationFactory(connectionString);
+            var factory = new CustomWebApplicationFactory(databaseName);
 
             _client = factory.WithWebHostBuilder(builder =>
             {
@@ -36,7 +36,10 @@ namespace RestaurantAPI.IntegrationTests
 
             }).CreateClient();
 
-            AuthHelper.AuthenticateAsync(_client).Wait();
+            if (authenticate)
+            {
+                AuthHelper.AuthenticateAsync(_client).Wait();
+            }
         }
 
     }

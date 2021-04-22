@@ -20,7 +20,7 @@ namespace RestaurantAPI.IntegrationTests
     {
         private readonly Guid _restaurantId;
 
-        public DishesControllerTests() : base("DishesTests")
+        public DishesControllerTests() : base("DishesTests", true)
         {
             _restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
         }
