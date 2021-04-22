@@ -105,12 +105,14 @@ namespace RestaurantAPI.Models
                     {
                         new Dish()
                         {
+                            Id = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"),
                             Name = "Nashville Hot Chicken",
                             Price = 10.30M,
                         },
 
                         new Dish()
                         {
+                            Id = Guid.Parse("773b1ffe-bf9d-4c3d-8204-e95a2b171d06"),
                             Name = "Chicken Nuggets",
                             Price = 5.30M,
                         },
