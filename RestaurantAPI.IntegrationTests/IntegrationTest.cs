@@ -29,7 +29,7 @@ namespace RestaurantAPI.IntegrationTests
                     var context = serviceScope.ServiceProvider.GetService<RestaurantDbContext>();
                     var seeder = serviceScope.ServiceProvider.GetService<RestaurantSeeder>();
                     context.Database.EnsureDeleted();
-                    context.Database.Migrate();
+                    context.Database.EnsureCreated();
                     seeder.Seed();
                 });
 

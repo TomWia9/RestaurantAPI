@@ -21,7 +21,7 @@ namespace RestaurantAPI.IntegrationTests
 {
     public class RestaurantsControllerTests : IntegrationTest
     {
-        public RestaurantsControllerTests() : base("Server=localhost\\sqlexpress;Database=RestaurantsTests;Trusted_Connection=True;")
+        public RestaurantsControllerTests() : base("RestaurantsTests")
         {
         }
 
