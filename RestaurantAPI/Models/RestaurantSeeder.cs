@@ -29,70 +29,81 @@ namespace RestaurantAPI.Models
 
             _logger.LogInformation("Connecting to database");
 
-            if (_context.Database.CanConnect())
+            if (!_context.Database.CanConnect()) return;
+
+            _logger.LogInformation("Connected to database");
+
+            if (_context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
             {
-                _logger.LogInformation("Connected to database");
-
-
                 var pendingMigrations = _context.Database.GetPendingMigrations();
 
                 if (pendingMigrations != null && pendingMigrations.Any())
                 {
                     _context.Database.Migrate();
                 }
-
-                if (!_context.Restaurants.Any())
-                {
-
-                    var restaurants = GetRestaurants();
-
-                    _context.Restaurants.AddRange(restaurants);
-                    _context.SaveChanges();
-                    _logger.LogInformation("Seeded restaurants");
-
-                }
-
-                if (!_roleManager.Roles.Any())
-                {
-                    _roleManager.CreateAsync(new Role()
-                    {
-                        Name = "User"
-                    }).Wait();
-
-                    _roleManager.CreateAsync(new Role()
-                    {
-                        Name = "Administrator"
-                    }).Wait();
-
-                    _logger.LogInformation("Seeded roles");
-
-                }
-
-                if (!_userManager.Users.Any())
-                {
-                    var newUser = new User()
-                    {
-                        Email = "admin@admin",
-                        UserName = "admin",
-                        FirstName = "admin",
-                        LastName = "admin"
-                    };
-
-                   _userManager.CreateAsync(newUser,"Admin123_").Wait();
-                   _userManager.AddToRoleAsync(newUser, "Administrator").Wait();
-
-                    _logger.LogInformation("Seeded user");
-
-                }
             }
+
+
+            if (!_context.Restaurants.Any())
+            {
+
+                var restaurants = GetRestaurants();
+
+                _context.Restaurants.AddRange(restaurants);
+                _context.SaveChanges();
+                _logger.LogInformation("Seeded restaurants");
+
+            }
+
+            if (!_roleManager.Roles.Any())
+            {
+                _roleManager.CreateAsync(new Role()
+                {
+                    Name = "User"
+                }).Wait();
+
+                _roleManager.CreateAsync(new Role()
+                {
+                    Name = "Administrator"
+                }).Wait();
+
+                _logger.LogInformation("Seeded roles");
+
+            }
+
+            if (_userManager.Users.Any()) return;
+
+            var newAdministrator = new User()
+            {
+                Email = "admin@admin",
+                UserName = "admin@admin",
+                FirstName = "admin",
+                LastName = "admin"
+            };
+
+            var newUser = new User()
+            {
+                Email = "user@example.com",
+                UserName = "user@example.com",
+                FirstName = "user",
+                LastName = "user"
+            };
+
+            _userManager.CreateAsync(newAdministrator,"Admin123_").Wait();
+            _userManager.CreateAsync(newUser,"Qwerty123_").Wait();
+            _userManager.AddToRoleAsync(newAdministrator, "Administrator").Wait();
+            _userManager.AddToRoleAsync(newUser, "User").Wait();
+
+            _logger.LogInformation("Seeded users");
         }
 
-        private IEnumerable<Restaurant> GetRestaurants()
+        private static IEnumerable<Restaurant> GetRestaurants()
         {
             var restaurants = new List<Restaurant>()
             {
                 new Restaurant()
                 {
+                    Id = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"),
                     Name = "KFC",
                     Category = "Fast Food",
                     Description =
@@ -104,12 +115,14 @@ namespace RestaurantAPI.Models
                     {
                         new Dish()
                         {
+                            Id = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"),
                             Name = "Nashville Hot Chicken",
                             Price = 10.30M,
                         },
 
                         new Dish()
                         {
+                            Id = Guid.Parse("773b1ffe-bf9d-4c3d-8204-e95a2b171d06"),
                             Name = "Chicken Nuggets",
                             Price = 5.30M,
                         },
@@ -123,6 +136,7 @@ namespace RestaurantAPI.Models
                 },
                 new Restaurant()
                 {
+                    Id = Guid.Parse("62694f89-9691-4464-88b8-2dcdb12a2d53"),
                     Name = "McDonald Szewska",
                     Category = "Fast Food",
                     Description =
