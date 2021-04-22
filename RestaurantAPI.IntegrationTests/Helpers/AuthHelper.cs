@@ -12,19 +12,31 @@ namespace RestaurantAPI.IntegrationTests.Helpers
 {
     public static class AuthHelper
     {
-        public static async Task AuthenticateAsync(HttpClient client)
+        public static async Task AuthenticateAdminAsync(HttpClient client)
         {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync(client));
-        }
-
-        private static async Task<string> GetJwtAsync(HttpClient client)
-        {
-            var response = await client.PostAsJsonAsync("api/auth/signin", new UserLoginRequest()
+            var loginRequest = new UserLoginRequest()
             {
                 Email = "admin@admin",
                 Password = "Admin123_",
+            };
 
-            });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
+        }
+
+        public static async Task AuthenticateUserAsync(HttpClient client)
+        {
+            var loginRequest = new UserLoginRequest()
+            {
+                Email = "user@example.com",
+                Password = "Qwerty123_"
+            };
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
+        }
+
+        private static async Task<string> GetJwtAsync(HttpClient client, UserLoginRequest loginRequest)
+        {
+            var response = await client.PostAsJsonAsync("api/auth/signin", loginRequest);
 
             var registrationResponse = await response.Content.ReadAsAsync<AuthenticationResponse>();
 

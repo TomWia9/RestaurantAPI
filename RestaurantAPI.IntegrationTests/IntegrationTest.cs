@@ -38,7 +38,7 @@ namespace RestaurantAPI.IntegrationTests
 
             if (authenticate)
             {
-                AuthHelper.AuthenticateAsync(_client).Wait();
+                AuthHelper.AuthenticateUserAsync(_client).Wait();
             }
         }
 

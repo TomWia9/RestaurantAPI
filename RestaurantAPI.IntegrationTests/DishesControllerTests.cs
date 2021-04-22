@@ -62,9 +62,23 @@ namespace RestaurantAPI.IntegrationTests
         }
 
         [Fact]
+        public async void GetDish_WithWrongId_Should_Return404()
+        {
+            //Arrange
+            var dishId = Guid.Parse("55b3b4a4-4671-454b-aeec-b16835fb747c"); //wrong id
+
+            //Act
+            var response = await _client.GetAsync($"api/restaurants/{_restaurantId}/{dishId}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async Task PostDish_Should_CreateNewDish()
         {
             //Arrange
+            await AuthHelper.AuthenticateAdminAsync(_client);
             var newDish = new DishForCreationDto()
             {
                 Name = "Test dish",
@@ -101,13 +115,31 @@ namespace RestaurantAPI.IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-            
+        }
+
+        [Fact]
+        public async Task PostDish_WithWrongAuth_Should_Return403() //role == user instead of administrator
+        {
+            //Arrange
+            var newDish = new DishForCreationDto()
+            {
+                Name = "Test dish",
+                Description = "Test description",
+                Price = 21.99M
+            };
+
+            //Act
+            var response = await _client.PostAsJsonAsync($"api/restaurants/{_restaurantId}/dishes", newDish);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
 
         [Fact]
         public async Task PutDish_Should_UpdateDish()
         {
             //Arrange
+            await AuthHelper.AuthenticateAdminAsync(_client);
             var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
             var updatedDish = new DishForUpdateDto()
             {
@@ -142,24 +174,30 @@ namespace RestaurantAPI.IntegrationTests
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
-
         [Fact]
-        public async void GetDish_WithWrongId_Should_Return404()
+        public async Task PutDish_WithWrongAuth_Should_Return403() //role == user instead of administrator
         {
             //Arrange
-            var dishId = Guid.Parse("55b3b4a4-4671-454b-aeec-b16835fb747c"); //wrong id
+            var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
+            var updatedDish = new DishForUpdateDto()
+            {
+                Name = "Updated dish",
+                Description = "Updated description",
+                Price = 29.99M
+            };
 
             //Act
-            var response = await _client.GetAsync($"api/restaurants/{_restaurantId}/{dishId}");
+            var response = await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
 
             //Assert
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
 
         [Fact]
         public async Task DeleteDish_Should_Return204()
         {
             //Arrange
+            await AuthHelper.AuthenticateAdminAsync(_client);
             var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
 
             //Act
@@ -167,7 +205,6 @@ namespace RestaurantAPI.IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
         }
 
         [Fact]
@@ -182,8 +219,19 @@ namespace RestaurantAPI.IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-
         }
 
+        [Fact]
+        public async Task DeleteDish_WithWrongAuth_Should_Return403() //role == user instead of administrator
+        {
+            //Arrange
+            var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
+
+            //Act
+            var response = await _client.DeleteAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
     }
 }

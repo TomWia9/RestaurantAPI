@@ -22,7 +22,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignUp_Should_RegisterNewUser()
         {
-            //Assert
+            //Arrange
             var userForCreation = new UserSignUpRequest
             {
                 Email = "test@test.com",
@@ -42,7 +42,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignUp_Should_ReturnToken()
         {
-            //Assert
+            //Arrange
             var userForCreation = new UserSignUpRequest
             {
                 Email = "test@test.com",
@@ -64,7 +64,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignUp_WithExistingEmail_Should_ReturnBadRequest()
         {
-            //Assert
+            //Arrange
             var userForCreation = new UserSignUpRequest
             {
                 Email = "admin@admin", //already existing email
@@ -84,7 +84,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignUp_WithIncorrectPassword_Should_ReturnBadRequest()
         {
-            //Assert
+            //Arrange
             var userForCreation = new UserSignUpRequest
             {
                 Email = "test@test.com", 
@@ -105,7 +105,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignIn_WithProperlyData_Should_ReturnToken()
         {
-            //Assert
+            //Arrange
             var userLoginRequest = new UserLoginRequest()
             {
                 Email = "admin@admin", 
@@ -124,7 +124,7 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task SignIn_WithIncorrectData_Should_ReturnBadRequest()
         {
-            //Assert
+            //Arrange
             var userLoginRequest = new UserLoginRequest()
             {
                 Email = "test", 
