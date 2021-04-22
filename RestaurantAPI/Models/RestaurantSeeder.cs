@@ -76,7 +76,7 @@ namespace RestaurantAPI.Models
             var newUser = new User()
             {
                 Email = "admin@admin",
-                UserName = "admin",
+                UserName = "admin@admin",
                 FirstName = "admin",
                 LastName = "admin"
             };
