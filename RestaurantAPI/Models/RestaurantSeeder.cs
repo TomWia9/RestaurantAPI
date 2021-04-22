@@ -73,7 +73,7 @@ namespace RestaurantAPI.Models
 
             if (_userManager.Users.Any()) return;
 
-            var newUser = new User()
+            var newAdministrator = new User()
             {
                 Email = "admin@admin",
                 UserName = "admin@admin",
@@ -81,10 +81,20 @@ namespace RestaurantAPI.Models
                 LastName = "admin"
             };
 
-            _userManager.CreateAsync(newUser,"Admin123_").Wait();
-            _userManager.AddToRoleAsync(newUser, "Administrator").Wait();
+            var newUser = new User()
+            {
+                Email = "user@example.com",
+                UserName = "user@example.com",
+                FirstName = "user",
+                LastName = "user"
+            };
 
-            _logger.LogInformation("Seeded user");
+            _userManager.CreateAsync(newAdministrator,"Admin123_").Wait();
+            _userManager.CreateAsync(newUser,"Qwerty123_").Wait();
+            _userManager.AddToRoleAsync(newAdministrator, "Administrator").Wait();
+            _userManager.AddToRoleAsync(newUser, "User").Wait();
+
+            _logger.LogInformation("Seeded users");
         }
 
         private static IEnumerable<Restaurant> GetRestaurants()
