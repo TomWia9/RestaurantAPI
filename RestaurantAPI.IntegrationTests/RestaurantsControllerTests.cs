@@ -28,9 +28,6 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task GetRestaurants_Should_ReturnListOfRestaurants()
         {
-            //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
-
             //Act
             var response = await _client.GetAsync("api/restaurants");
 
@@ -44,7 +41,6 @@ namespace RestaurantAPI.IntegrationTests
         public async Task GetRestaurant_Should_ReturnRestaurantDto()
         {
             //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
 
             //Act
@@ -59,9 +55,6 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task GetRestaurants_Should_Return2Restaurants()
         {
-            //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
-
             //Act
             var response = await _client.GetAsync("api/restaurants");
 
@@ -74,8 +67,6 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task PostRestaurant_Should_CreateNewRestaurant()
         {
-            //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
 
             var newRestaurant = new RestaurantForCreationDto()
             {
@@ -114,9 +105,6 @@ namespace RestaurantAPI.IntegrationTests
         [Fact]
         public async Task PutRestaurant_Should_UpdateRestaurant()
         {
-            //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
-
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
 
             var updatedRestaurant = new RestaurantForCreationDto()
@@ -146,7 +134,6 @@ namespace RestaurantAPI.IntegrationTests
         public async void GetRestaurant_WithWrongId_Should_Return404()
         {
             //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
             var restaurantId = Guid.Parse("56aa8ab6-dc9e-4aa2-a128-ea15da8ff8ad"); //wrong id
 
             //Act
@@ -160,6 +147,8 @@ namespace RestaurantAPI.IntegrationTests
         public async Task PostRestaurant_WithoutAuth_Should_Return401()
         {
             //Arrange
+            _client.DefaultRequestHeaders.Authorization = null;
+
             var newRestaurant = new RestaurantForUpdateDto()
             {
                 Name = "Test restaurant",
@@ -188,6 +177,7 @@ namespace RestaurantAPI.IntegrationTests
         public async Task PutRestaurant_WithoutAuth_Should_Return401()
         {
             //Arrange
+            _client.DefaultRequestHeaders.Authorization = null;
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
             var updatedRestaurant = new RestaurantForCreationDto()
             {
@@ -216,7 +206,6 @@ namespace RestaurantAPI.IntegrationTests
         public async Task DeleteRestaurant_Should_Return204()
         {
             //Arrange
-            await AuthHelper.AuthenticateAsync(_client);
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
 
             //Act
@@ -230,6 +219,7 @@ namespace RestaurantAPI.IntegrationTests
         public async Task DeleteRestaurant_WithoutAuth_Should_Return401()
         {
             //Arrange
+            _client.DefaultRequestHeaders.Authorization = null;
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
 
             //Act

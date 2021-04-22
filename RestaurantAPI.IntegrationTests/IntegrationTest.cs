@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using RestaurantAPI.IntegrationTests.Helpers;
 using RestaurantAPI.Models;
 using Xunit;
 
@@ -34,6 +35,8 @@ namespace RestaurantAPI.IntegrationTests
                 });
 
             }).CreateClient();
+
+            AuthHelper.AuthenticateAsync(_client).Wait();
         }
 
     }
