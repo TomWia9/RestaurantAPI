@@ -84,6 +84,7 @@ namespace RestaurantAPI.Controllers
         /// <returns>An IActionResult</returns>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(Guid id, RestaurantForUpdateDto restaurant)

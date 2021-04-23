@@ -25,6 +25,13 @@ namespace RestaurantAPI.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Download file
+        /// </summary>
+        /// <param name="fileName">Name of file you want to download</param>
+        /// <returns>An IActionResult</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         [ResponseCache(Duration = 1200, VaryByQueryKeys = new[] {"fileName"})]
         public async Task<IActionResult> GetFile([FromQuery] string fileName)
@@ -37,6 +44,13 @@ namespace RestaurantAPI.Controllers
             return File(result, contentType, fileName);
         }
 
+        /// <summary>
+        /// Upload file
+        /// </summary>
+        /// <param name="file">File to upload</param>
+        /// <returns>An IActionResult</returns>
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
         {
