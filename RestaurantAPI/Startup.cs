@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Data.Dto;
@@ -80,7 +81,11 @@ namespace RestaurantAPI
             services.AddAuth(Configuration.GetSection("Jwt").Get<JwtSettings>());
 
             services.AddAutoMapper(GetType().Assembly);
-            services.AddMvc().AddFluentValidation(options =>
+            services.AddMvc(options =>
+            {
+                options.ReturnHttpNotAcceptable = true;
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+            }).AddFluentValidation(options =>
             {
                 options.ValidatorOptions.LanguageManager.Enabled = false;
             });
