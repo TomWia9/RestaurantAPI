@@ -25,6 +25,15 @@ namespace RestaurantAPI.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Register new user
+        /// </summary>
+        /// <param name="userSignUpRequest">The user to register</param>
+        /// <returns>An IActionResult</returns>
+        /// <response code="201">Creates user and returns jwt token</response>
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(UserSignUpRequest userSignUpRequest)
         {
@@ -32,6 +41,15 @@ namespace RestaurantAPI.Controllers
             return Created(string.Empty, result);
         }
 
+        /// <summary>
+        /// Authenticate user
+        /// </summary>
+        /// <param name="userLoginRequest">The user to authenticate</param>
+        /// <returns>An IActionResult</returns>
+        /// <response code="200">Authenticates user and returns jwt token</response>
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("signIn")]
         public async Task<IActionResult> SignIn(UserLoginRequest userLoginRequest)
         {
