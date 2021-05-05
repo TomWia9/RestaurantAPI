@@ -2,39 +2,42 @@
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Dishes.Queries.GetDish;
 using AutoMapper;
-using Domain.Dto;
 using MediatR;
 
-namespace Application.Dishes.RequestHandlers
+namespace Application.Dishes.Commands.UpdateDish
 {
-    public class GetDishHandler : IRequestHandler<GetDishQuery, DishDto>
+    public class UpdateDishHandler : IRequestHandler<UpdateDishCommand>
     {
         private readonly IDishesRepository _dishesRepository;
         private readonly IMapper _mapper;
 
-        public GetDishHandler(IDishesRepository dishesRepository, IMapper mapper)
+        public UpdateDishHandler(IDishesRepository dishesRepository, IMapper mapper)
         {
             _dishesRepository = dishesRepository;
             _mapper = mapper;
         }
 
-        public async Task<DishDto> Handle(GetDishQuery request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateDishCommand request, CancellationToken cancellationToken)
         {
             if (!await _dishesRepository.RestaurantExists(request.RestaurantId))
             {
                 throw new NotFoundException("Restaurant not found");
             }
 
-            var dish = await _dishesRepository.GetAsync(request.RestaurantId, request.DishId);
+            var dishFromRepo = await _dishesRepository.GetAsync(request.RestaurantId, request.DishId);
 
-            if (dish == null)
+            if (dishFromRepo == null)
             {
                 throw new NotFoundException();
             }
 
-            return _mapper.Map<DishDto>(dish);
+            _mapper.Map(request.DishForUpdate, dishFromRepo);
+
+            await _dishesRepository.UpdateAsync(dishFromRepo);
+
+            return Unit.Value;
+
         }
     }
 }

@@ -2,21 +2,24 @@
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Dishes.Commands.DeleteDish;
+using AutoMapper;
+using Domain.Dto;
 using MediatR;
 
-namespace Application.Dishes.RequestHandlers
+namespace Application.Dishes.Queries.GetDish
 {
-    public class DeleteDishHandler : IRequestHandler<DeleteDishCommand>
+    public class GetDishHandler : IRequestHandler<GetDishQuery, DishDto>
     {
         private readonly IDishesRepository _dishesRepository;
+        private readonly IMapper _mapper;
 
-        public DeleteDishHandler(IDishesRepository dishesRepository)
+        public GetDishHandler(IDishesRepository dishesRepository, IMapper mapper)
         {
             _dishesRepository = dishesRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(DeleteDishCommand request, CancellationToken cancellationToken)
+        public async Task<DishDto> Handle(GetDishQuery request, CancellationToken cancellationToken)
         {
             if (!await _dishesRepository.RestaurantExists(request.RestaurantId))
             {
@@ -30,9 +33,7 @@ namespace Application.Dishes.RequestHandlers
                 throw new NotFoundException();
             }
 
-            await _dishesRepository.DeleteAsync(dish);
-
-            return Unit.Value;
+            return _mapper.Map<DishDto>(dish);
         }
     }
 }

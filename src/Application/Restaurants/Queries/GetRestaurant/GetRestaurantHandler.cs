@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Restaurants.Queries.GetRestaurant;
 using AutoMapper;
 using Domain.Dto;
 using MediatR;
 
-namespace Application.Restaurants.RequestHandlers
+namespace Application.Restaurants.Queries.GetRestaurant
 {
     public class GetRestaurantHandler : IRequestHandler<GetRestaurantQuery, RestaurantDto>
     {

@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
-using Application.Files.Queries.GetFile;
 using MediatR;
 
-namespace Application.Files.RequestHandlers
+namespace Application.Files.Queries.GetFile
 {
     public class GetFileHandler : IRequestHandler<GetFileQuery, byte[]>
     {

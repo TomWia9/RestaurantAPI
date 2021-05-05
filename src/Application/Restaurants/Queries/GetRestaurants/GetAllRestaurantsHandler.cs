@@ -3,12 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using Application.Restaurants.Queries.GetRestaurants;
 using AutoMapper;
 using Domain.Dto;
 using MediatR;
 
-namespace Application.Restaurants.RequestHandlers
+namespace Application.Restaurants.Queries.GetRestaurants
 {
     public class GetAllRestaurantsHandler : IRequestHandler<GetAllRestaurantsQuery, PagedList<RestaurantDto>>
     {

@@ -3,12 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using Application.Dishes.Queries.GetDishes;
 using AutoMapper;
 using Domain.Dto;
 using MediatR;
 
-namespace Application.Dishes.RequestHandlers
+namespace Application.Dishes.Queries.GetDishes
 {
     public class GetAllDishesHandler : IRequestHandler<GetAllDishesQuery, PagedList<DishDto>>
     {

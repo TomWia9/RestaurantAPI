@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
-using Application.Files.Commands.UploadFile;
 using MediatR;
 
-namespace Application.Files.RequestHandlers
+namespace Application.Files.Commands.UploadFile
 {
     public class UploadFileHandler : IRequestHandler<UploadFileCommand>
     {

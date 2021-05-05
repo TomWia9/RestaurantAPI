@@ -1,13 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
-using Application.Restaurants.Commands.CreateRestaurant;
 using AutoMapper;
 using Domain.Dto;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Restaurants.RequestHandlers
+namespace Application.Restaurants.Commands.CreateRestaurant
 {
     public class CreateRestaurantHandler : IRequestHandler<CreateRestaurantCommand, RestaurantDto>
     {

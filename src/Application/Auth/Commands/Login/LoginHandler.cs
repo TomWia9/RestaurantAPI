@@ -2,27 +2,25 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Auth.Commands.SignUp;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using MediatR;
 
-namespace Application.Auth.RequestHandlers
+namespace Application.Auth.Commands.Login
 {
-    public class SignUpHandler : IRequestHandler<SignUpCommand, AuthenticationResponse>
+    public class LoginHandler : IRequestHandler<LoginCommand, AuthenticationResponse>
     {
         private readonly IIdentityService _identityService;
 
-        public SignUpHandler(IIdentityService identityService)
+        public LoginHandler(IIdentityService identityService)
         {
             _identityService = identityService;
         }
 
-
-        public async Task<AuthenticationResponse> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var result = await _identityService.Register(request.UserSignUpRequest);
+            var result = await _identityService.Login(request.UserLoginRequest);
 
             if (result.ErrorMessages.Any())
             {

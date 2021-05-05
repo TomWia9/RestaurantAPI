@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Restaurants.Commands.UpdateRestaurant;
 using AutoMapper;
 using MediatR;
 
-namespace Application.Restaurants.RequestHandlers
+namespace Application.Restaurants.Commands.UpdateRestaurant
 {
     public class UpdateRestaurantHandler : IRequestHandler<UpdateRestaurantCommand>
     {

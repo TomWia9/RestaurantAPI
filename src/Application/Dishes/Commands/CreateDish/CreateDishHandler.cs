@@ -2,13 +2,12 @@
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Dishes.Commands.CreateDish;
 using AutoMapper;
 using Domain.Dto;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Dishes.RequestHandlers
+namespace Application.Dishes.Commands.CreateDish
 {
     public class CreateDishHandler : IRequestHandler<CreateDishCommand, DishDto>
     {
