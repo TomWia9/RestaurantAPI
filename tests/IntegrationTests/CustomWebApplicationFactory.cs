@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using Api;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using RestaurantAPI.Data.Requests;
-using RestaurantAPI.Data.Response;
-using RestaurantAPI.Models;
 
-namespace RestaurantAPI.IntegrationTests
+namespace IntegrationTests
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
     {

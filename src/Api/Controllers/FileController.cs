@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Application.Files.Commands.UploadFile;
+using Application.Files.Queries.GetFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using RestaurantAPI.Commands.File;
-using RestaurantAPI.Queries.File;
 
-namespace RestaurantAPI.Controllers
+namespace Api.Controllers
 {
     [Authorize]
     [Route("file")]

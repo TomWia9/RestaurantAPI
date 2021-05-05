@@ -1,18 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using System.Threading.Tasks;
+using Application.Auth.Commands.Login;
+using Application.Auth.Commands.SignUp;
+using Domain.Requests;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using RestaurantAPI.Commands.Auth;
-using RestaurantAPI.Data.Requests;
-using RestaurantAPI.Models.Auth;
-using RestaurantAPI.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace RestaurantAPI.Controllers
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

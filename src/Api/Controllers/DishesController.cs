@@ -1,21 +1,20 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
+using Application.Dishes.Commands.CreateDish;
+using Application.Dishes.Commands.DeleteDish;
+using Application.Dishes.Commands.UpdateDish;
+using Application.Dishes.Queries.GetDish;
+using Application.Dishes.Queries.GetDishes;
+using Domain.Dto;
+using Domain.ResourceParameters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RestaurantAPI.Commands.Dishes;
-using RestaurantAPI.Data.Dto;
-using RestaurantAPI.Data.ResourceParameters;
-using RestaurantAPI.Models;
-using RestaurantAPI.Queries.Dishes;
-using RestaurantAPI.Repositories;
 
-namespace RestaurantAPI.Controllers
+namespace Api.Controllers
 {
     [Authorize]
     [Route("api/Restaurants/{restaurantId}/[controller]")]

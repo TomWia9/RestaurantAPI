@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Net.Http;
+using Infrastructure.Persistence;
+using IntegrationTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
-using RestaurantAPI.IntegrationTests.Helpers;
-using RestaurantAPI.Models;
-using Xunit;
 
-namespace RestaurantAPI.IntegrationTests
+namespace IntegrationTests
 {
     public abstract class IntegrationTest
     {

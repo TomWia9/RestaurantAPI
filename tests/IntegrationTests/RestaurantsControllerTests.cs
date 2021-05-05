@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
+using Domain.Dto;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using RestaurantAPI.Data.Dto;
-using RestaurantAPI.IntegrationTests.Helpers;
-using RestaurantAPI.Models;
+using IntegrationTests.Helpers;
 using Xunit;
 
-namespace RestaurantAPI.IntegrationTests
+namespace IntegrationTests
 {
     public class RestaurantsControllerTests : IntegrationTest
     {

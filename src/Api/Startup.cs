@@ -1,39 +1,39 @@
+using System;
+using Application;
+using Application.Auth.Commands.Login;
+using Application.Auth.Commands.SignUp;
+using Application.Common.Extensions;
+using Application.Common.Interfaces;
+using Application.Common.Middleware;
+using Application.Dishes.Commands.CreateDish;
+using Application.Dishes.Commands.UpdateDish;
+using Application.Dishes.Queries.GetDishes;
+using Application.Restaurants.Commands.CreateRestaurant;
+using Application.Restaurants.Commands.UpdateRestaurant;
+using Application.Restaurants.Queries.GetRestaurants;
+using Domain.Dto;
+using Domain.Requests;
+using Domain.ResourceParameters;
+using Domain.Settings;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Infrastructure;
+using Infrastructure.Identity;
+using Infrastructure.Persistence;
+using Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using RestaurantAPI.Data.Dto;
-using RestaurantAPI.Data.Requests;
-using RestaurantAPI.Data.ResourceParameters;
-using RestaurantAPI.Extensions;
-using RestaurantAPI.Models;
-using RestaurantAPI.Models.Auth;
-using RestaurantAPI.Repositories;
-using RestaurantAPI.Services;
-using RestaurantAPI.Settings;
-using RestaurantAPI.Shared.Middleware;
-using RestaurantAPI.Shared.Validators;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
 
-namespace RestaurantAPI
+namespace Api
 {
     public class Startup
     {
@@ -47,40 +47,9 @@ namespace RestaurantAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRestaurantsRepository, RestaurantRepository>();
-            services.AddScoped<IDishesRepository, DishesRepository>();
-            services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<RestaurantSeeder>();
+            services.AddApplication(Configuration);
+            services.AddInfrastructure(Configuration);
 
-            services.AddScoped<ErrorHandlingMiddleware>();
-
-            services.AddTransient<IValidator<RestaurantForCreationDto>, RestaurantForCreationValidator>();
-            services.AddTransient<IValidator<RestaurantForUpdateDto>, RestaurantForUpdateValidator>();
-            services.AddTransient<IValidator<DishForCreationDto>, DishForCreationValidator>();
-            services.AddTransient<IValidator<DishForUpdateDto>, DishForUpdateValidator>();
-            services.AddTransient<IValidator<UserSignUpRequest>, UserSignUpRequestValidator>();
-            services.AddTransient<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
-            services.AddTransient<IValidator<RestaurantsResourceParameters>, RestaurantQueryValidator>();
-            services.AddTransient<IValidator<DishesResourceParameters>, DishQueryValidator>();
-
-            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
-
-
-            services.AddDbContext<RestaurantDbContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
-
-            services.AddIdentity<User, Role>(options =>
-                {
-                    options.Password.RequiredLength = 8;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-                })
-                .AddEntityFrameworkStores<RestaurantDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddAuth(Configuration.GetSection("Jwt").Get<JwtSettings>());
-
-            services.AddAutoMapper(GetType().Assembly);
             services.AddMvc(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -90,11 +59,8 @@ namespace RestaurantAPI
                 options.ValidatorOptions.LanguageManager.Enabled = false;
             });
 
-            services.AddMediatR(typeof(Startup));
-
             services.AddControllers();
 
-            services.UseSwagger(); //extension method
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

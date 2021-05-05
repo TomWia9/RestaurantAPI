@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
+using Application.Restaurants.Commands.CreateRestaurant;
+using Application.Restaurants.Commands.DeleteRestaurant;
+using Application.Restaurants.Commands.UpdateRestaurant;
+using Application.Restaurants.Queries.GetRestaurant;
+using Application.Restaurants.Queries.GetRestaurants;
+using Domain.Dto;
+using Domain.ResourceParameters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using RestaurantAPI.Commands;
-using RestaurantAPI.Commands.Restaurants;
-using RestaurantAPI.Data.Dto;
-using RestaurantAPI.Data.ResourceParameters;
-using RestaurantAPI.Models;
-using RestaurantAPI.Queries;
-using RestaurantAPI.Queries.Restaurants;
-using RestaurantAPI.Repositories;
 
-namespace RestaurantAPI.Controllers
+namespace Api.Controllers
 {
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
