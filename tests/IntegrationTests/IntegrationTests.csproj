@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RestaurantAPI\Api.csproj" />
+    <ProjectReference Include="..\..\src\Api\Api.csproj" />
   </ItemGroup>
 
 </Project>
