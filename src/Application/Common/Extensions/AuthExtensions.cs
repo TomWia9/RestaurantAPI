@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using JwtSettings = Application.Common.Settings.JwtSettings;
 
 namespace Application.Common.Extensions
 {
     public static class AuthExtensions
     {
-        public static IServiceCollection AddAuth(this IServiceCollection services, Domain.Settings.JwtSettings jwtSettings)
+        public static IServiceCollection AddAuth(this IServiceCollection services, JwtSettings jwtSettings)
         {
             services.AddAuthorization()
                 .AddAuthentication(options =>

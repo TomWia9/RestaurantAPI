@@ -47,8 +47,11 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication(Configuration);
+            services.AddApplication();
             services.AddInfrastructure(Configuration);
+            services.AddAuth(Configuration.GetSection("Jwt").Get<JwtSettings>());
+
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             services.AddMvc(options =>
             {
@@ -60,6 +63,7 @@ namespace Api
             });
 
             services.AddControllers();
+            services.UseSwagger();
 
         }
 
