@@ -17,7 +17,6 @@ using Application.Restaurants.Queries.GetRestaurants;
 using Domain.Dto;
 using Domain.Requests;
 using Domain.ResourceParameters;
-using Domain.Settings;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
