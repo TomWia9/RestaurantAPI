@@ -7,35 +7,35 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Restaurants_Addresses_AddressId",
-                table: "Restaurants");
+                "FK_Restaurants_Addresses_AddressId",
+                "Restaurants");
 
             migrationBuilder.DropIndex(
-                name: "IX_Restaurants_AddressId",
-                table: "Restaurants");
+                "IX_Restaurants_AddressId",
+                "Restaurants");
 
             migrationBuilder.DropColumn(
-                name: "AddressId",
-                table: "Restaurants");
+                "AddressId",
+                "Restaurants");
 
             migrationBuilder.AddColumn<int>(
-                name: "RestaurantId",
-                table: "Addresses",
-                type: "int",
+                "RestaurantId",
+                "Addresses",
+                "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_RestaurantId",
-                table: "Addresses",
-                column: "RestaurantId",
+                "IX_Addresses_RestaurantId",
+                "Addresses",
+                "RestaurantId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Restaurants_RestaurantId",
-                table: "Addresses",
-                column: "RestaurantId",
-                principalTable: "Restaurants",
+                "FK_Addresses_Restaurants_RestaurantId",
+                "Addresses",
+                "RestaurantId",
+                "Restaurants",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -43,35 +43,35 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Restaurants_RestaurantId",
-                table: "Addresses");
+                "FK_Addresses_Restaurants_RestaurantId",
+                "Addresses");
 
             migrationBuilder.DropIndex(
-                name: "IX_Addresses_RestaurantId",
-                table: "Addresses");
+                "IX_Addresses_RestaurantId",
+                "Addresses");
 
             migrationBuilder.DropColumn(
-                name: "RestaurantId",
-                table: "Addresses");
+                "RestaurantId",
+                "Addresses");
 
             migrationBuilder.AddColumn<int>(
-                name: "AddressId",
-                table: "Restaurants",
-                type: "int",
+                "AddressId",
+                "Restaurants",
+                "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_AddressId",
-                table: "Restaurants",
-                column: "AddressId",
+                "IX_Restaurants_AddressId",
+                "Restaurants",
+                "AddressId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Restaurants_Addresses_AddressId",
-                table: "Restaurants",
-                column: "AddressId",
-                principalTable: "Addresses",
+                "FK_Restaurants_Addresses_AddressId",
+                "Restaurants",
+                "AddressId",
+                "Addresses",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

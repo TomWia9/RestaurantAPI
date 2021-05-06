@@ -28,10 +28,7 @@ namespace IntegrationTests
 
                 services.Remove(descriptor);
 
-                services.AddDbContext<RestaurantDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase(_databaseName);
-                });
+                services.AddDbContext<RestaurantDbContext>(options => { options.UseInMemoryDatabase(_databaseName); });
             });
         }
     }

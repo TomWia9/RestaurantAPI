@@ -9,8 +9,8 @@ namespace Application.Restaurants.Commands.UpdateRestaurant
 {
     public class UpdateRestaurantHandler : IRequestHandler<UpdateRestaurantCommand>
     {
-        private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
+        private readonly IRestaurantsRepository _restaurantsRepository;
 
         public UpdateRestaurantHandler(IRestaurantsRepository restaurantsRepository, IMapper mapper)
         {
@@ -22,10 +22,7 @@ namespace Application.Restaurants.Commands.UpdateRestaurant
         {
             var restaurantFromRepo = await _restaurantsRepository.GetAsync(request.RestaurantId);
 
-            if (restaurantFromRepo == null)
-            {
-                throw new NotFoundException();
-            }
+            if (restaurantFromRepo == null) throw new NotFoundException();
 
             _mapper.Map(request.RestaurantForUpdate, restaurantFromRepo);
 

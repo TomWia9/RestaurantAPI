@@ -26,7 +26,6 @@ namespace Application.Common.Middleware
                 context.Response.StatusCode = 404;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsJsonAsync(notFoundException.Message);
-
             }
             catch (BadRequestException badRequestException)
             {

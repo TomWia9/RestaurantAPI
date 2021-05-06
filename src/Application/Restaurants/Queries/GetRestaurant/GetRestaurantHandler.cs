@@ -10,8 +10,8 @@ namespace Application.Restaurants.Queries.GetRestaurant
 {
     public class GetRestaurantHandler : IRequestHandler<GetRestaurantQuery, RestaurantDto>
     {
-        private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
+        private readonly IRestaurantsRepository _restaurantsRepository;
 
         public GetRestaurantHandler(IRestaurantsRepository restaurantsRepository, IMapper mapper)
         {
@@ -23,10 +23,7 @@ namespace Application.Restaurants.Queries.GetRestaurant
         {
             var restaurant = await _restaurantsRepository.GetAsync(request.RestaurantId);
 
-            if (restaurant == null)
-            {
-                throw new NotFoundException();
-            }
+            if (restaurant == null) throw new NotFoundException();
 
             return _mapper.Map<RestaurantDto>(restaurant);
         }

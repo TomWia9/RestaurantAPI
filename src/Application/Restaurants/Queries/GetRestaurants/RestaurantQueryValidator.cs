@@ -14,14 +14,15 @@ namespace Application.Restaurants.Queries.GetRestaurants
             nameof(Restaurant.Name),
             nameof(Restaurant.Description),
             nameof(Restaurant.Category),
-            nameof(Restaurant.Address.City),
+            nameof(Restaurant.Address.City)
         };
 
         public RestaurantQueryValidator()
         {
             RuleFor(r => r.SortBy)
-                .Must(value => string.IsNullOrEmpty(value) || allowedSortByColumnNames.Contains(value.FirstCharToUpper()))
-            .WithMessage($"SortBy is optional, or must be in [{string.Join(",", allowedSortByColumnNames)}]");
+                .Must(value =>
+                    string.IsNullOrEmpty(value) || allowedSortByColumnNames.Contains(value.FirstCharToUpper()))
+                .WithMessage($"SortBy is optional, or must be in [{string.Join(",", allowedSortByColumnNames)}]");
         }
     }
 }

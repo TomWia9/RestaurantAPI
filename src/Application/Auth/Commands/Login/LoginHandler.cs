@@ -23,9 +23,7 @@ namespace Application.Auth.Commands.Login
             var result = await _identityService.Login(request.UserLoginRequest);
 
             if (result.ErrorMessages.Any())
-            {
                 throw new BadRequestException(string.Join(Environment.NewLine, result.ErrorMessages));
-            }
 
             return result;
         }

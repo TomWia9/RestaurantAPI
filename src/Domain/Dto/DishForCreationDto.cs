@@ -1,7 +1,7 @@
 ﻿namespace Domain.Dto
 {
     /// <summary>
-    /// The dish with Name, Description and Price fields
+    ///     The dish with Name, Description and Price fields
     /// </summary>
     public class DishForCreationDto : DishForManipulationDto
     {

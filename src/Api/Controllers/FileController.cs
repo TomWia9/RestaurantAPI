@@ -22,7 +22,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Download file
+        ///     Download file
         /// </summary>
         /// <param name="fileName">Name of file you want to download</param>
         /// <returns>An IActionResult</returns>
@@ -41,7 +41,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Upload file
+        ///     Upload file
         /// </summary>
         /// <param name="file">File to upload</param>
         /// <returns>An IActionResult</returns>

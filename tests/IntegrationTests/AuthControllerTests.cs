@@ -74,15 +74,15 @@ namespace IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-           
         }
+
         [Fact]
         public async Task SignUp_WithIncorrectPassword_Should_ReturnBadRequest()
         {
             //Arrange
             var userForCreation = new UserSignUpRequest
             {
-                Email = "test@test.com", 
+                Email = "test@test.com",
                 FirstName = "Test",
                 LastName = "Test",
                 Password = "Q", //incorrect password
@@ -94,16 +94,15 @@ namespace IntegrationTests
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-           
         }
 
         [Fact]
         public async Task SignIn_WithProperlyData_Should_ReturnToken()
         {
             //Arrange
-            var userLoginRequest = new UserLoginRequest()
+            var userLoginRequest = new UserLoginRequest
             {
-                Email = "admin@admin", 
+                Email = "admin@admin",
                 Password = "Admin123_"
             };
 
@@ -120,9 +119,9 @@ namespace IntegrationTests
         public async Task SignIn_WithIncorrectData_Should_ReturnBadRequest()
         {
             //Arrange
-            var userLoginRequest = new UserLoginRequest()
+            var userLoginRequest = new UserLoginRequest
             {
-                Email = "test", 
+                Email = "test",
                 Password = "test"
             };
 

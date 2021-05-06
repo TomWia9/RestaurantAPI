@@ -24,7 +24,8 @@ namespace Application.Dishes.Queries.GetDishes
         {
             var dishes = await _dishesRepository.GetAllAsync(request.RestaurantId, request.DishesResourceParameters);
 
-            return new PagedList<DishDto>(_mapper.Map<IEnumerable<DishDto>>(dishes), dishes.TotalCount, request.DishesResourceParameters.PageNumber, request.DishesResourceParameters.PageSize);
+            return new PagedList<DishDto>(_mapper.Map<IEnumerable<DishDto>>(dishes), dishes.TotalCount,
+                request.DishesResourceParameters.PageNumber, request.DishesResourceParameters.PageSize);
         }
     }
 }

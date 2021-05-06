@@ -24,9 +24,7 @@ namespace Application.Auth.Commands.SignUp
             var result = await _identityService.Register(request.UserSignUpRequest);
 
             if (result.ErrorMessages.Any())
-            {
                 throw new BadRequestException(string.Join(Environment.NewLine, result.ErrorMessages));
-            }
 
             return result;
         }

@@ -7,9 +7,9 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Dishes",
-                type: "nvarchar(500)",
+                "Description",
+                "Dishes",
+                "nvarchar(500)",
                 maxLength: 500,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -20,9 +20,9 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Dishes",
-                type: "nvarchar(max)",
+                "Description",
+                "Dishes",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(500)",

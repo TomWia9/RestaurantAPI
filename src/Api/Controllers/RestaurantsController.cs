@@ -31,14 +31,15 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Get a list of restaurants
+        ///     Get a list of restaurants
         /// </summary>
         /// <param name="restaurantsResourceParameters">Query parameters to apply</param>
         /// <returns>An ActionResult of type IEnumerable of RestaurantDto</returns>
         /// <response code="200">Returns the list of restaurants</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants([FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
+        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants(
+            [FromQuery] RestaurantsResourceParameters restaurantsResourceParameters)
         {
             var result = await _mediator.Send(new GetAllRestaurantsQuery(restaurantsResourceParameters));
 
@@ -49,7 +50,7 @@ namespace Api.Controllers
                 result.CurrentPage,
                 result.TotalPages,
                 result.HasNext,
-                result.HasPrevious,
+                result.HasPrevious
             };
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
@@ -58,7 +59,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Get restaurant by id
+        ///     Get restaurant by id
         /// </summary>
         /// <param name="id">The Id of restaurant you want to get</param>
         /// <returns>An ActionResult of type RestaurantDto</returns>
@@ -73,7 +74,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Update restaurant
+        ///     Update restaurant
         /// </summary>
         /// <param name="id">The Id of restaurant you want to update</param>
         /// <param name="restaurant">The restaurant with updated values</param>
@@ -90,7 +91,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Create new restaurant
+        ///     Create new restaurant
         /// </summary>
         /// <param name="restaurant">The restaurant to create</param>
         /// <returns>An ActionResult of type RestaurantDto</returns>
@@ -103,11 +104,11 @@ namespace Api.Controllers
         public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantForCreationDto restaurant)
         {
             var result = await _mediator.Send(new CreateRestaurantCommand(restaurant));
-            return CreatedAtAction("GetRestaurant", new { id = result.Id }, result);
+            return CreatedAtAction("GetRestaurant", new {id = result.Id}, result);
         }
 
         /// <summary>
-        /// Delete the restaurant with given id
+        ///     Delete the restaurant with given id
         /// </summary>
         /// <param name="id">The Id of restaurant you want to delete</param>
         /// <returns>An IActionResult</returns>

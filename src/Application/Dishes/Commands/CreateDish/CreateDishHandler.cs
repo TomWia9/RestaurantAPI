@@ -23,9 +23,7 @@ namespace Application.Dishes.Commands.CreateDish
         public async Task<DishDto> Handle(CreateDishCommand request, CancellationToken cancellationToken)
         {
             if (!await _dishesRepository.RestaurantExists(request.RestaurantId))
-            {
                 throw new NotFoundException("Restaurant not found");
-            }
 
             var newDish = _mapper.Map<Dish>(request.DishForCreation);
             newDish.RestaurantId = request.RestaurantId;
@@ -33,7 +31,6 @@ namespace Application.Dishes.Commands.CreateDish
             await _dishesRepository.AddAsync(newDish);
 
             return _mapper.Map<DishDto>(newDish);
-
         }
     }
 }

@@ -20,20 +20,17 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public async Task<PagedList<Restaurant>> GetAllAsync(RestaurantsResourceParameters restaurantsResourceParameters)
+        public async Task<PagedList<Restaurant>> GetAllAsync(
+            RestaurantsResourceParameters restaurantsResourceParameters)
         {
             if (restaurantsResourceParameters == null)
-            {
                 throw new ArgumentNullException(nameof(restaurantsResourceParameters));
-            }
 
             var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
 
             //filtering
             if (restaurantsResourceParameters.HasDelivery != null)
-            {
                 collection = collection.Where(r => r.HasDelivery == restaurantsResourceParameters.HasDelivery);
-            }
 
             if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.SearchQuery))
             {
@@ -48,19 +45,17 @@ namespace Infrastructure.Repositories
 
             //sorting
             if (string.IsNullOrWhiteSpace(restaurantsResourceParameters.SortBy))
-            {
                 //default sorting
                 return await PagedList<Restaurant>.ToPagedListAsync(collection.OrderBy(r => r.Name),
                     restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
-            }
 
             //custom sorting
-            collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy, restaurantsResourceParameters.SortDirection);
+            collection = SortRestaurants(collection, restaurantsResourceParameters.SortBy,
+                restaurantsResourceParameters.SortDirection);
 
             //pagination
             return await PagedList<Restaurant>.ToPagedListAsync(collection,
                 restaurantsResourceParameters.PageNumber, restaurantsResourceParameters.PageSize);
-
         }
 
         public async Task<Restaurant> GetAsync(Guid id)
@@ -68,14 +63,15 @@ namespace Infrastructure.Repositories
             return await _context.Restaurants.Include(r => r.Address).FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        private static IQueryable<Restaurant> SortRestaurants(IQueryable<Restaurant> collection, string sortBy, SortDirection sortDirection)
+        private static IQueryable<Restaurant> SortRestaurants(IQueryable<Restaurant> collection, string sortBy,
+            SortDirection sortDirection)
         {
             var columnsSelector = new Dictionary<string, Expression<Func<Restaurant, object>>>
             {
-                { nameof(Restaurant.Name), r => r.Name },
-                { nameof(Restaurant.Description), r => r.Description },
-                { nameof(Restaurant.Category), r => r.Category },
-                { nameof(Restaurant.Address.City), r => r.Address.City },
+                {nameof(Restaurant.Name), r => r.Name},
+                {nameof(Restaurant.Description), r => r.Description},
+                {nameof(Restaurant.Category), r => r.Category},
+                {nameof(Restaurant.Address.City), r => r.Address.City}
             };
 
             var selectedColumn = columnsSelector[sortBy.FirstCharToUpper()];
@@ -86,6 +82,5 @@ namespace Infrastructure.Repositories
 
             return collection;
         }
-
     }
 }

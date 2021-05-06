@@ -8,98 +8,98 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Restaurants_RestaurantId",
-                table: "Addresses");
+                "FK_Addresses_Restaurants_RestaurantId",
+                "Addresses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Dishes_Restaurants_RestaurantId",
-                table: "Dishes");
+                "FK_Dishes_Restaurants_RestaurantId",
+                "Dishes");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Restaurants",
-                table: "Restaurants");
+                "PK_Restaurants",
+                "Restaurants");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Dishes",
-                table: "Dishes");
+                "PK_Dishes",
+                "Dishes");
 
             migrationBuilder.DropIndex(
-                name: "IX_Dishes_RestaurantId",
-                table: "Dishes");
+                "IX_Dishes_RestaurantId",
+                "Dishes");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Addresses",
-                table: "Addresses");
+                "PK_Addresses",
+                "Addresses");
 
             migrationBuilder.DropIndex(
-                name: "IX_Addresses_RestaurantId",
-                table: "Addresses");
+                "IX_Addresses_RestaurantId",
+                "Addresses");
 
             migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Restaurants");
+                "Id",
+                "Restaurants");
 
             migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Dishes");
+                "Id",
+                "Dishes");
 
             migrationBuilder.DropColumn(
-                name: "RestaurantId",
-                table: "Dishes");
+                "RestaurantId",
+                "Dishes");
 
             migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Addresses");
+                "Id",
+                "Addresses");
 
             migrationBuilder.DropColumn(
-                name: "RestaurantId",
-                table: "Addresses");
+                "RestaurantId",
+                "Addresses");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "RestaurantTRestaurant",
-                table: "Dishes",
-                type: "uniqueidentifier",
+                "RestaurantTRestaurant",
+                "Dishes",
+                "uniqueidentifier",
                 nullable: true);
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Restaurants",
-                table: "Restaurants",
-                column: "TRestaurant");
+                "PK_Restaurants",
+                "Restaurants",
+                "TRestaurant");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Dishes",
-                table: "Dishes",
-                column: "TDish");
+                "PK_Dishes",
+                "Dishes",
+                "TDish");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Addresses",
-                table: "Addresses",
-                column: "TAddress");
+                "PK_Addresses",
+                "Addresses",
+                "TAddress");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dishes_RestaurantTRestaurant",
-                table: "Dishes",
-                column: "RestaurantTRestaurant");
+                "IX_Dishes_RestaurantTRestaurant",
+                "Dishes",
+                "RestaurantTRestaurant");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_TRestaurant",
-                table: "Addresses",
-                column: "TRestaurant",
+                "IX_Addresses_TRestaurant",
+                "Addresses",
+                "TRestaurant",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Restaurants_TRestaurant",
-                table: "Addresses",
-                column: "TRestaurant",
-                principalTable: "Restaurants",
+                "FK_Addresses_Restaurants_TRestaurant",
+                "Addresses",
+                "TRestaurant",
+                "Restaurants",
                 principalColumn: "TRestaurant",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Dishes_Restaurants_RestaurantTRestaurant",
-                table: "Dishes",
-                column: "RestaurantTRestaurant",
-                principalTable: "Restaurants",
+                "FK_Dishes_Restaurants_RestaurantTRestaurant",
+                "Dishes",
+                "RestaurantTRestaurant",
+                "Restaurants",
                 principalColumn: "TRestaurant",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -107,114 +107,114 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Restaurants_TRestaurant",
-                table: "Addresses");
+                "FK_Addresses_Restaurants_TRestaurant",
+                "Addresses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Dishes_Restaurants_RestaurantTRestaurant",
-                table: "Dishes");
+                "FK_Dishes_Restaurants_RestaurantTRestaurant",
+                "Dishes");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Restaurants",
-                table: "Restaurants");
+                "PK_Restaurants",
+                "Restaurants");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Dishes",
-                table: "Dishes");
+                "PK_Dishes",
+                "Dishes");
 
             migrationBuilder.DropIndex(
-                name: "IX_Dishes_RestaurantTRestaurant",
-                table: "Dishes");
+                "IX_Dishes_RestaurantTRestaurant",
+                "Dishes");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Addresses",
-                table: "Addresses");
+                "PK_Addresses",
+                "Addresses");
 
             migrationBuilder.DropIndex(
-                name: "IX_Addresses_TRestaurant",
-                table: "Addresses");
+                "IX_Addresses_TRestaurant",
+                "Addresses");
 
             migrationBuilder.DropColumn(
-                name: "RestaurantTRestaurant",
-                table: "Dishes");
+                "RestaurantTRestaurant",
+                "Dishes");
 
             migrationBuilder.AddColumn<int>(
-                name: "Id",
-                table: "Restaurants",
-                type: "int",
-                nullable: false,
-                defaultValue: 0)
+                    "Id",
+                    "Restaurants",
+                    "int",
+                    nullable: false,
+                    defaultValue: 0)
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddColumn<int>(
-                name: "Id",
-                table: "Dishes",
-                type: "int",
-                nullable: false,
-                defaultValue: 0)
+                    "Id",
+                    "Dishes",
+                    "int",
+                    nullable: false,
+                    defaultValue: 0)
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddColumn<int>(
-                name: "RestaurantId",
-                table: "Dishes",
-                type: "int",
+                "RestaurantId",
+                "Dishes",
+                "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "Id",
-                table: "Addresses",
-                type: "int",
-                nullable: false,
-                defaultValue: 0)
+                    "Id",
+                    "Addresses",
+                    "int",
+                    nullable: false,
+                    defaultValue: 0)
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddColumn<int>(
-                name: "RestaurantId",
-                table: "Addresses",
-                type: "int",
+                "RestaurantId",
+                "Addresses",
+                "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Restaurants",
-                table: "Restaurants",
-                column: "Id");
+                "PK_Restaurants",
+                "Restaurants",
+                "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Dishes",
-                table: "Dishes",
-                column: "Id");
+                "PK_Dishes",
+                "Dishes",
+                "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Addresses",
-                table: "Addresses",
-                column: "Id");
+                "PK_Addresses",
+                "Addresses",
+                "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dishes_RestaurantId",
-                table: "Dishes",
-                column: "RestaurantId");
+                "IX_Dishes_RestaurantId",
+                "Dishes",
+                "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_RestaurantId",
-                table: "Addresses",
-                column: "RestaurantId",
+                "IX_Addresses_RestaurantId",
+                "Addresses",
+                "RestaurantId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Restaurants_RestaurantId",
-                table: "Addresses",
-                column: "RestaurantId",
-                principalTable: "Restaurants",
+                "FK_Addresses_Restaurants_RestaurantId",
+                "Addresses",
+                "RestaurantId",
+                "Restaurants",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Dishes_Restaurants_RestaurantId",
-                table: "Dishes",
-                column: "RestaurantId",
-                principalTable: "Restaurants",
+                "FK_Dishes_Restaurants_RestaurantId",
+                "Dishes",
+                "RestaurantId",
+                "Restaurants",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

@@ -22,16 +22,11 @@ namespace Application.Dishes.Queries.GetDish
         public async Task<DishDto> Handle(GetDishQuery request, CancellationToken cancellationToken)
         {
             if (!await _dishesRepository.RestaurantExists(request.RestaurantId))
-            {
                 throw new NotFoundException("Restaurant not found");
-            }
 
             var dish = await _dishesRepository.GetAsync(request.RestaurantId, request.DishId);
 
-            if (dish == null)
-            {
-                throw new NotFoundException();
-            }
+            if (dish == null) throw new NotFoundException();
 
             return _mapper.Map<DishDto>(dish);
         }

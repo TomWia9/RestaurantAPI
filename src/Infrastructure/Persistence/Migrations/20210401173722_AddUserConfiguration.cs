@@ -7,9 +7,9 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "LastName",
-                table: "AspNetUsers",
-                type: "nvarchar(30)",
+                "LastName",
+                "AspNetUsers",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -18,9 +18,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "FirstName",
-                table: "AspNetUsers",
-                type: "nvarchar(30)",
+                "FirstName",
+                "AspNetUsers",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -32,18 +32,18 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "LastName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
+                "LastName",
+                "AspNetUsers",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",
                 oldMaxLength: 30);
 
             migrationBuilder.AlterColumn<string>(
-                name: "FirstName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
+                "FirstName",
+                "AspNetUsers",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",

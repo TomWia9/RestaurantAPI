@@ -75,7 +75,7 @@ namespace IntegrationTests
         {
             //Arrange
             await AuthHelper.AuthenticateAdminAsync(_client);
-            var newDish = new DishForCreationDto()
+            var newDish = new DishForCreationDto
             {
                 Name = "Test dish",
                 Description = "Test description",
@@ -99,7 +99,7 @@ namespace IntegrationTests
         {
             //Arrange
             _client.DefaultRequestHeaders.Authorization = null;
-            var newDish = new DishForCreationDto()
+            var newDish = new DishForCreationDto
             {
                 Name = "Test dish",
                 Description = "Test description",
@@ -117,7 +117,7 @@ namespace IntegrationTests
         public async Task PostDish_WithWrongAuth_Should_Return403() //role == user instead of administrator
         {
             //Arrange
-            var newDish = new DishForCreationDto()
+            var newDish = new DishForCreationDto
             {
                 Name = "Test dish",
                 Description = "Test description",
@@ -137,7 +137,7 @@ namespace IntegrationTests
             //Arrange
             await AuthHelper.AuthenticateAdminAsync(_client);
             var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
-            var updatedDish = new DishForUpdateDto()
+            var updatedDish = new DishForUpdateDto
             {
                 Name = "Updated dish",
                 Description = "Updated description",
@@ -145,7 +145,8 @@ namespace IntegrationTests
             };
 
             //Act
-            var response = await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
+            var response =
+                await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
 
             //Assert
             response.EnsureSuccessStatusCode();
@@ -157,7 +158,7 @@ namespace IntegrationTests
             //Arrange
             _client.DefaultRequestHeaders.Authorization = null;
             var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
-            var updatedDish = new DishForUpdateDto()
+            var updatedDish = new DishForUpdateDto
             {
                 Name = "Updated dish",
                 Description = "Updated description",
@@ -165,17 +166,19 @@ namespace IntegrationTests
             };
 
             //Act
-            var response = await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
+            var response =
+                await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
+
         [Fact]
         public async Task PutDish_WithWrongAuth_Should_Return403() //role == user instead of administrator
         {
             //Arrange
             var dishId = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"); //id of one of seeded dish
-            var updatedDish = new DishForUpdateDto()
+            var updatedDish = new DishForUpdateDto
             {
                 Name = "Updated dish",
                 Description = "Updated description",
@@ -183,7 +186,8 @@ namespace IntegrationTests
             };
 
             //Act
-            var response = await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
+            var response =
+                await _client.PutAsJsonAsync($"api/restaurants/{_restaurantId}/dishes/{dishId}", updatedDish);
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Forbidden);

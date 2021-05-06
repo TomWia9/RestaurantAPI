@@ -12,7 +12,7 @@ namespace Application.Dishes.Queries.GetDishes
         private readonly string[] allowedSortByColumnNames =
         {
             nameof(Dish.Name),
-            nameof(Dish.Description),
+            nameof(Dish.Description)
         };
 
         public DishQueryValidator()
@@ -20,7 +20,8 @@ namespace Application.Dishes.Queries.GetDishes
             RuleFor(d => d.MaximumPrice).GreaterThan(1);
 
             RuleFor(d => d.SortBy)
-                .Must(value => string.IsNullOrEmpty(value) || allowedSortByColumnNames.Contains(value.FirstCharToUpper()))
+                .Must(value =>
+                    string.IsNullOrEmpty(value) || allowedSortByColumnNames.Contains(value.FirstCharToUpper()))
                 .WithMessage($"SortBy is optional, or must be in [{string.Join(",", allowedSortByColumnNames)}]");
         }
     }

@@ -12,14 +12,12 @@ namespace Application.Files.Queries.GetFile
         {
             var rootPath = Directory.GetCurrentDirectory();
             var filePath = $"{rootPath}/Files/{request.FileName}";
-            var fileExists = System.IO.File.Exists(filePath);
+            var fileExists = File.Exists(filePath);
 
-            if (!fileExists)
-            {
-                throw new NotFoundException();
-            }
+            if (!fileExists) throw new NotFoundException();
 
-            return await System.IO.File.ReadAllBytesAsync(filePath, cancellationToken);;
+            return await File.ReadAllBytesAsync(filePath, cancellationToken);
+            ;
         }
     }
 }

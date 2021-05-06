@@ -11,8 +11,8 @@ namespace Application.Restaurants.Queries.GetRestaurants
 {
     public class GetAllRestaurantsHandler : IRequestHandler<GetAllRestaurantsQuery, PagedList<RestaurantDto>>
     {
-        private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
+        private readonly IRestaurantsRepository _restaurantsRepository;
 
         public GetAllRestaurantsHandler(IRestaurantsRepository restaurantsRepository, IMapper mapper)
         {
@@ -20,11 +20,14 @@ namespace Application.Restaurants.Queries.GetRestaurants
             _mapper = mapper;
         }
 
-        public async Task<PagedList<RestaurantDto>> Handle(GetAllRestaurantsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<RestaurantDto>> Handle(GetAllRestaurantsQuery request,
+            CancellationToken cancellationToken)
         {
             var restaurants = await _restaurantsRepository.GetAllAsync(request.RestaurantsResourceParameters);
 
-            return new PagedList<RestaurantDto>(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants), restaurants.TotalCount, request.RestaurantsResourceParameters.PageNumber, request.RestaurantsResourceParameters.PageSize);
+            return new PagedList<RestaurantDto>(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants),
+                restaurants.TotalCount, request.RestaurantsResourceParameters.PageNumber,
+                request.RestaurantsResourceParameters.PageSize);
         }
     }
 }

@@ -10,8 +10,8 @@ namespace Application.Restaurants.Commands.CreateRestaurant
 {
     public class CreateRestaurantHandler : IRequestHandler<CreateRestaurantCommand, RestaurantDto>
     {
-        private readonly IRestaurantsRepository _restaurantsRepository;
         private readonly IMapper _mapper;
+        private readonly IRestaurantsRepository _restaurantsRepository;
 
         public CreateRestaurantHandler(IMapper mapper, IRestaurantsRepository restaurantsRepository)
         {

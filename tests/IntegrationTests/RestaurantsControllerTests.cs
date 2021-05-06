@@ -75,7 +75,7 @@ namespace IntegrationTests
         {
             //Arrange
             await AuthHelper.AuthenticateAdminAsync(_client);
-            var newRestaurant = new RestaurantForCreationDto()
+            var newRestaurant = new RestaurantForCreationDto
             {
                 Name = "Test restaurant",
                 Description = "Test description",
@@ -83,7 +83,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Test city",
                     PostalCode = "12-345",
@@ -115,7 +115,7 @@ namespace IntegrationTests
             //Arrange
             _client.DefaultRequestHeaders.Authorization = null;
 
-            var newRestaurant = new RestaurantForUpdateDto()
+            var newRestaurant = new RestaurantForUpdateDto
             {
                 Name = "Test restaurant",
                 Description = "Test description",
@@ -123,7 +123,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Test city",
                     PostalCode = "12-345",
@@ -142,7 +142,7 @@ namespace IntegrationTests
         public async Task PostRestaurant_WithWrongAuth_Should_Return403() //role == user instead of administrator
         {
             //Arrange
-            var newRestaurant = new RestaurantForUpdateDto()
+            var newRestaurant = new RestaurantForUpdateDto
             {
                 Name = "Test restaurant",
                 Description = "Test description",
@@ -150,7 +150,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Test city",
                     PostalCode = "12-345",
@@ -172,7 +172,7 @@ namespace IntegrationTests
             await AuthHelper.AuthenticateAdminAsync(_client);
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
 
-            var updatedRestaurant = new RestaurantForCreationDto()
+            var updatedRestaurant = new RestaurantForCreationDto
             {
                 Name = "Updated restaurant",
                 Description = "Updated description",
@@ -180,7 +180,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Updated city",
                     PostalCode = "12-345",
@@ -200,7 +200,7 @@ namespace IntegrationTests
         {
             //Arrange
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
-            var updatedRestaurant = new RestaurantForCreationDto()
+            var updatedRestaurant = new RestaurantForCreationDto
             {
                 Name = "Updated restaurant",
                 Description = "Updated description",
@@ -208,7 +208,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Updated city",
                     PostalCode = "12-345",
@@ -229,7 +229,7 @@ namespace IntegrationTests
             //Arrange
             _client.DefaultRequestHeaders.Authorization = null;
             var restaurantId = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"); //id of one of seeded restaurant
-            var updatedRestaurant = new RestaurantForCreationDto()
+            var updatedRestaurant = new RestaurantForCreationDto
             {
                 Name = "Updated restaurant",
                 Description = "Updated description",
@@ -237,7 +237,7 @@ namespace IntegrationTests
                 HasDelivery = true,
                 ContactEmail = "test@test.com",
                 ContactNumber = "123456789",
-                Address = new AddressDto()
+                Address = new AddressDto
                 {
                     City = "Updated city",
                     PostalCode = "12-345",

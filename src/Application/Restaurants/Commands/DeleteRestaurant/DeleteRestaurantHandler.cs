@@ -19,10 +19,7 @@ namespace Application.Restaurants.Commands.DeleteRestaurant
         {
             var restaurant = await _restaurantsRepository.GetAsync(request.RestaurantId);
 
-            if (restaurant == null)
-            {
-                throw new NotFoundException();
-            }
+            if (restaurant == null) throw new NotFoundException();
 
             await _restaurantsRepository.DeleteAsync(restaurant);
 

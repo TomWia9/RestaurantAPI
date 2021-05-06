@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Common.Abstractions
 {
-    public abstract class QueryValidator<T> : AbstractValidator<T> where T: ResourceParameters
+    public abstract class QueryValidator<T> : AbstractValidator<T> where T : ResourceParameters
     {
         protected QueryValidator()
         {

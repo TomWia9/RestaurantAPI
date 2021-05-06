@@ -12,11 +12,12 @@ namespace Infrastructure.Persistence
     public class RestaurantSeeder
     {
         private readonly RestaurantDbContext _context;
+        private readonly ILogger<RestaurantSeeder> _logger;
         private readonly RoleManager<Role> _roleManager;
         private readonly UserManager<User> _userManager;
-        private readonly ILogger<RestaurantSeeder> _logger;
 
-        public RestaurantSeeder(RestaurantDbContext context, RoleManager<Role> roleManager, UserManager<User> userManager, ILogger<RestaurantSeeder> logger)
+        public RestaurantSeeder(RestaurantDbContext context, RoleManager<Role> roleManager,
+            UserManager<User> userManager, ILogger<RestaurantSeeder> logger)
         {
             _context = context;
             _roleManager = roleManager;
@@ -26,7 +27,6 @@ namespace Infrastructure.Persistence
 
         public void Seed()
         {
-
             _logger.LogInformation("Connecting to database");
 
             if (!_context.Database.CanConnect()) return;
@@ -37,43 +37,37 @@ namespace Infrastructure.Persistence
             {
                 var pendingMigrations = _context.Database.GetPendingMigrations();
 
-                if (pendingMigrations != null && pendingMigrations.Any())
-                {
-                    _context.Database.Migrate();
-                }
+                if (pendingMigrations != null && pendingMigrations.Any()) _context.Database.Migrate();
             }
 
 
             if (!_context.Restaurants.Any())
             {
-
                 var restaurants = GetRestaurants();
 
                 _context.Restaurants.AddRange(restaurants);
                 _context.SaveChanges();
                 _logger.LogInformation("Seeded restaurants");
-
             }
 
             if (!_roleManager.Roles.Any())
             {
-                _roleManager.CreateAsync(new Role()
+                _roleManager.CreateAsync(new Role
                 {
                     Name = "User"
                 }).Wait();
 
-                _roleManager.CreateAsync(new Role()
+                _roleManager.CreateAsync(new Role
                 {
                     Name = "Administrator"
                 }).Wait();
 
                 _logger.LogInformation("Seeded roles");
-
             }
 
             if (_userManager.Users.Any()) return;
 
-            var newAdministrator = new User()
+            var newAdministrator = new User
             {
                 Email = "admin@admin",
                 UserName = "admin@admin",
@@ -81,7 +75,7 @@ namespace Infrastructure.Persistence
                 LastName = "admin"
             };
 
-            var newUser = new User()
+            var newUser = new User
             {
                 Email = "user@example.com",
                 UserName = "user@example.com",
@@ -89,8 +83,8 @@ namespace Infrastructure.Persistence
                 LastName = "user"
             };
 
-            _userManager.CreateAsync(newAdministrator,"Admin123_").Wait();
-            _userManager.CreateAsync(newUser,"Qwerty123_").Wait();
+            _userManager.CreateAsync(newAdministrator, "Admin123_").Wait();
+            _userManager.CreateAsync(newUser, "Qwerty123_").Wait();
             _userManager.AddToRoleAsync(newAdministrator, "Administrator").Wait();
             _userManager.AddToRoleAsync(newUser, "User").Wait();
 
@@ -99,9 +93,9 @@ namespace Infrastructure.Persistence
 
         private static IEnumerable<Restaurant> GetRestaurants()
         {
-            var restaurants = new List<Restaurant>()
+            var restaurants = new List<Restaurant>
             {
-                new Restaurant()
+                new()
                 {
                     Id = Guid.Parse("8248d356-75f3-4cf6-9356-40dea7cd7a3d"),
                     Name = "KFC",
@@ -111,30 +105,30 @@ namespace Infrastructure.Persistence
                     ContactEmail = "contact@kfc.com",
                     ContactNumber = "123456789",
                     HasDelivery = true,
-                    Dishes = new List<Dish>()
+                    Dishes = new List<Dish>
                     {
-                        new Dish()
+                        new()
                         {
                             Id = Guid.Parse("16fc7797-d79f-4bc5-a4ec-4e0950914618"),
                             Name = "Nashville Hot Chicken",
-                            Price = 10.30M,
+                            Price = 10.30M
                         },
 
-                        new Dish()
+                        new()
                         {
                             Id = Guid.Parse("773b1ffe-bf9d-4c3d-8204-e95a2b171d06"),
                             Name = "Chicken Nuggets",
-                            Price = 5.30M,
-                        },
+                            Price = 5.30M
+                        }
                     },
-                    Address = new Address()
+                    Address = new Address
                     {
                         City = "Kraków",
                         Street = "Długa 5",
                         PostalCode = "30-001"
                     }
                 },
-                new Restaurant()
+                new()
                 {
                     Id = Guid.Parse("62694f89-9691-4464-88b8-2dcdb12a2d53"),
                     Name = "McDonald Szewska",
@@ -144,7 +138,7 @@ namespace Infrastructure.Persistence
                     ContactEmail = "contact@mcdonald.com",
                     ContactNumber = "987654321",
                     HasDelivery = true,
-                    Address = new Address()
+                    Address = new Address
                     {
                         City = "Kraków",
                         Street = "Szewska 2",

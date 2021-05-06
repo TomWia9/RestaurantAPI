@@ -17,8 +17,8 @@ namespace Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly UserManager<User> _userManager;
 
         public IdentityService(UserManager<User> userManager, IOptions<JwtSettings> jwtSettings)
         {
@@ -28,7 +28,7 @@ namespace Infrastructure.Identity
 
         public async Task<AuthenticationResponse> Register(UserSignUpRequest userSignUpRequest)
         {
-            var newUser = new User()
+            var newUser = new User
             {
                 Email = userSignUpRequest.Email,
                 UserName = userSignUpRequest.Email,
@@ -36,28 +36,23 @@ namespace Infrastructure.Identity
                 LastName = userSignUpRequest.LastName
             };
 
-           var createdUserResult = await _userManager.CreateAsync(newUser, userSignUpRequest.Password);
+            var createdUserResult = await _userManager.CreateAsync(newUser, userSignUpRequest.Password);
 
-           if (!createdUserResult.Succeeded)
-           {
-               return new AuthenticationResponse()
+            if (!createdUserResult.Succeeded)
+                return new AuthenticationResponse
                 {
                     ErrorMessages = createdUserResult.Errors.Select(e => e.Description)
-                }; 
-           }
+                };
 
-           var addedRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
+            var addedRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
 
-           if (!addedRoleResult.Succeeded)
-           {
-               return new AuthenticationResponse()
-               {
-                   ErrorMessages = addedRoleResult.Errors.Select(e => e.Description)
-               };
-           }
+            if (!addedRoleResult.Succeeded)
+                return new AuthenticationResponse
+                {
+                    ErrorMessages = addedRoleResult.Errors.Select(e => e.Description)
+                };
 
-           return await GenerateAuthenticationResponseWithTokenAsync(newUser);
-
+            return await GenerateAuthenticationResponseWithTokenAsync(newUser);
         }
 
         public async Task<AuthenticationResponse> Login(UserLoginRequest userLoginRequest)
@@ -65,25 +60,20 @@ namespace Infrastructure.Identity
             var user = await _userManager.FindByEmailAsync(userLoginRequest.Email);
 
             if (user == null)
-            {
-                return new AuthenticationResponse()
+                return new AuthenticationResponse
                 {
-                    ErrorMessages = new List<string> { "User not found" }
+                    ErrorMessages = new List<string> {"User not found"}
                 };
-            }
 
             var userHasValidPassword = await _userManager.CheckPasswordAsync(user, userLoginRequest.Password);
 
             if (!userHasValidPassword)
-            {
-                return new AuthenticationResponse()
+                return new AuthenticationResponse
                 {
                     ErrorMessages = new List<string> {"Login or password incorrect"}
                 };
-            }
 
             return await GenerateAuthenticationResponseWithTokenAsync(user);
-
         }
 
         private async Task<AuthenticationResponse> GenerateAuthenticationResponseWithTokenAsync(User user)
@@ -101,7 +91,8 @@ namespace Infrastructure.Identity
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 }),
                 Expires = DateTime.Now.AddDays(Convert.ToDouble(_jwtSettings.ExpirationInDays)),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+                SigningCredentials =
+                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
                 Issuer = _jwtSettings.Issuer
             };
 
@@ -111,7 +102,7 @@ namespace Infrastructure.Identity
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new AuthenticationResponse()
+            return new AuthenticationResponse
             {
                 Token = tokenHandler.WriteToken(token)
             };

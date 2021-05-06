@@ -20,7 +20,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Register new user
+        ///     Register new user
         /// </summary>
         /// <param name="userSignUpRequest">The user to register</param>
         /// <returns>An IActionResult</returns>
@@ -36,7 +36,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Authenticate user
+        ///     Authenticate user
         /// </summary>
         /// <param name="userLoginRequest">The user to authenticate</param>
         /// <returns>An IActionResult</returns>

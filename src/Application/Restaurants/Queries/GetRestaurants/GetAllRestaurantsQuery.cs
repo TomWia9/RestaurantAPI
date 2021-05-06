@@ -7,11 +7,11 @@ namespace Application.Restaurants.Queries.GetRestaurants
 {
     public class GetAllRestaurantsQuery : IRequest<PagedList<RestaurantDto>>
     {
-        public RestaurantsResourceParameters RestaurantsResourceParameters { get; set; }
-
         public GetAllRestaurantsQuery(RestaurantsResourceParameters restaurantsResourceParameters)
         {
             RestaurantsResourceParameters = restaurantsResourceParameters;
         }
+
+        public RestaurantsResourceParameters RestaurantsResourceParameters { get; set; }
     }
 }

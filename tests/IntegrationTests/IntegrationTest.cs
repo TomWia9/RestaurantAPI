@@ -26,14 +26,9 @@ namespace IntegrationTests
                     context.Database.EnsureCreated();
                     seeder.Seed();
                 });
-
             }).CreateClient();
 
-            if (authenticate)
-            {
-                AuthHelper.AuthenticateUserAsync(_client).Wait();
-            }
+            if (authenticate) AuthHelper.AuthenticateUserAsync(_client).Wait();
         }
-
     }
 }

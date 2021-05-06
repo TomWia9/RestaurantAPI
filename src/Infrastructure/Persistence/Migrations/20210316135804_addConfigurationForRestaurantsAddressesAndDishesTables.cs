@@ -7,9 +7,9 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Restaurants",
-                type: "nvarchar(30)",
+                "Name",
+                "Restaurants",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -18,9 +18,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Restaurants",
-                type: "nvarchar(100)",
+                "Description",
+                "Restaurants",
+                "nvarchar(100)",
                 maxLength: 100,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -28,9 +28,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ContactNumber",
-                table: "Restaurants",
-                type: "nvarchar(16)",
+                "ContactNumber",
+                "Restaurants",
+                "nvarchar(16)",
                 maxLength: 16,
                 nullable: false,
                 defaultValue: "",
@@ -39,9 +39,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ContactEmail",
-                table: "Restaurants",
-                type: "nvarchar(40)",
+                "ContactEmail",
+                "Restaurants",
+                "nvarchar(40)",
                 maxLength: 40,
                 nullable: false,
                 defaultValue: "",
@@ -50,9 +50,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Category",
-                table: "Restaurants",
-                type: "nvarchar(30)",
+                "Category",
+                "Restaurants",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -61,9 +61,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Dishes",
-                type: "nvarchar(30)",
+                "Name",
+                "Dishes",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -72,9 +72,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Street",
-                table: "Addresses",
-                type: "nvarchar(50)",
+                "Street",
+                "Addresses",
+                "nvarchar(50)",
                 maxLength: 50,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -82,9 +82,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "PostalCode",
-                table: "Addresses",
-                type: "nvarchar(7)",
+                "PostalCode",
+                "Addresses",
+                "nvarchar(7)",
                 maxLength: 7,
                 nullable: false,
                 defaultValue: "",
@@ -93,9 +93,9 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "City",
-                table: "Addresses",
-                type: "nvarchar(30)",
+                "City",
+                "Addresses",
+                "nvarchar(30)",
                 maxLength: 30,
                 nullable: false,
                 defaultValue: "",
@@ -107,18 +107,18 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Restaurants",
-                type: "nvarchar(max)",
+                "Name",
+                "Restaurants",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",
                 oldMaxLength: 30);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Restaurants",
-                type: "nvarchar(max)",
+                "Description",
+                "Restaurants",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(100)",
@@ -126,45 +126,45 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ContactNumber",
-                table: "Restaurants",
-                type: "nvarchar(max)",
+                "ContactNumber",
+                "Restaurants",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(16)",
                 oldMaxLength: 16);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ContactEmail",
-                table: "Restaurants",
-                type: "nvarchar(max)",
+                "ContactEmail",
+                "Restaurants",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(40)",
                 oldMaxLength: 40);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Category",
-                table: "Restaurants",
-                type: "nvarchar(max)",
+                "Category",
+                "Restaurants",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",
                 oldMaxLength: 30);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Dishes",
-                type: "nvarchar(max)",
+                "Name",
+                "Dishes",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",
                 oldMaxLength: 30);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Street",
-                table: "Addresses",
-                type: "nvarchar(max)",
+                "Street",
+                "Addresses",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(50)",
@@ -172,18 +172,18 @@ namespace Infrastructure.Persistence.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "PostalCode",
-                table: "Addresses",
-                type: "nvarchar(max)",
+                "PostalCode",
+                "Addresses",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(7)",
                 oldMaxLength: 7);
 
             migrationBuilder.AlterColumn<string>(
-                name: "City",
-                table: "Addresses",
-                type: "nvarchar(max)",
+                "City",
+                "Addresses",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(30)",

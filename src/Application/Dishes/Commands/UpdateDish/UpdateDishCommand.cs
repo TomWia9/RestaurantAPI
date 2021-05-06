@@ -6,15 +6,15 @@ namespace Application.Dishes.Commands.UpdateDish
 {
     public class UpdateDishCommand : IRequest
     {
-        public Guid RestaurantId { get; set; }
-        public Guid DishId { get; set; }
-        public DishForUpdateDto DishForUpdate { get; set; }
-
         public UpdateDishCommand(Guid restaurantId, Guid dishId, DishForUpdateDto dishForUpdate)
         {
             RestaurantId = restaurantId;
             DishId = dishId;
             DishForUpdate = dishForUpdate;
         }
+
+        public Guid RestaurantId { get; set; }
+        public Guid DishId { get; set; }
+        public DishForUpdateDto DishForUpdate { get; set; }
     }
 }

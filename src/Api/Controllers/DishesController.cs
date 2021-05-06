@@ -29,7 +29,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Get a list of dishes from specified restaurant
+        ///     Get a list of dishes from specified restaurant
         /// </summary>
         /// <param name="restaurantId">The Id of restaurant you want to get dishes from</param>
         /// <param name="dishesResourceParameters">Query parameters to apply</param>
@@ -38,7 +38,8 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(Guid restaurantId, [FromQuery] DishesResourceParameters dishesResourceParameters)
+        public async Task<ActionResult<IEnumerable<DishDto>>> GetDishes(Guid restaurantId,
+            [FromQuery] DishesResourceParameters dishesResourceParameters)
         {
             var result = await _mediator.Send(new GetAllDishesQuery(restaurantId, dishesResourceParameters));
 
@@ -49,7 +50,7 @@ namespace Api.Controllers
                 result.CurrentPage,
                 result.TotalPages,
                 result.HasNext,
-                result.HasPrevious,
+                result.HasPrevious
             };
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
@@ -58,7 +59,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Get single dish from specified restaurant
+        ///     Get single dish from specified restaurant
         /// </summary>
         /// <param name="restaurantId">The Id of restaurant you want to get dish from</param>
         /// <param name="id">The Id of dish you want to get</param>
@@ -74,7 +75,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Create a new dish for restaurant
+        ///     Create a new dish for restaurant
         /// </summary>
         /// <param name="restaurantId">The id of restaurant for which to create dish</param>
         /// <param name="dish">Dish to create</param>
@@ -93,7 +94,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Update dish
+        ///     Update dish
         /// </summary>
         /// <param name="restaurantId">The Id of restaurant where you want to update dish</param>
         /// <param name="id">The Id of dish you want to update</param>
@@ -111,7 +112,7 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Delete the dish with given id
+        ///     Delete the dish with given id
         /// </summary>
         /// <param name="restaurantId">The Id of restaurant you want to delete dish from</param>
         /// <param name="id">The id of dish you want to delete</param>

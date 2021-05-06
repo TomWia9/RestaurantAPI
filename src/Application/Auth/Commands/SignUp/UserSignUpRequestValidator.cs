@@ -13,7 +13,6 @@ namespace Application.Auth.Commands.SignUp
             RuleFor(u => u.Password).Cascade(CascadeMode.Stop).NotEmpty().MaximumLength(64);
             RuleFor(u => u.ConfirmPassword).NotEmpty().Equal(u => u.Password)
                 .When(u => !string.IsNullOrWhiteSpace(u.Password)).WithMessage("Passwords do not match");
-
         }
     }
 }

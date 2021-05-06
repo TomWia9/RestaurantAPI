@@ -21,23 +21,17 @@ namespace Application.Dishes.Commands.UpdateDish
         public async Task<Unit> Handle(UpdateDishCommand request, CancellationToken cancellationToken)
         {
             if (!await _dishesRepository.RestaurantExists(request.RestaurantId))
-            {
                 throw new NotFoundException("Restaurant not found");
-            }
 
             var dishFromRepo = await _dishesRepository.GetAsync(request.RestaurantId, request.DishId);
 
-            if (dishFromRepo == null)
-            {
-                throw new NotFoundException();
-            }
+            if (dishFromRepo == null) throw new NotFoundException();
 
             _mapper.Map(request.DishForUpdate, dishFromRepo);
 
             await _dishesRepository.UpdateAsync(dishFromRepo);
 
             return Unit.Value;
-
         }
     }
 }

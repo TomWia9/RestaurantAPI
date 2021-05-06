@@ -10,24 +10,26 @@ namespace IntegrationTests.Helpers
     {
         public static async Task AuthenticateAdminAsync(HttpClient client)
         {
-            var loginRequest = new UserLoginRequest()
+            var loginRequest = new UserLoginRequest
             {
                 Email = "admin@admin",
-                Password = "Admin123_",
+                Password = "Admin123_"
             };
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
         }
 
         public static async Task AuthenticateUserAsync(HttpClient client)
         {
-            var loginRequest = new UserLoginRequest()
+            var loginRequest = new UserLoginRequest
             {
                 Email = "user@example.com",
                 Password = "Qwerty123_"
             };
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("bearer", await GetJwtAsync(client, loginRequest));
         }
 
         private static async Task<string> GetJwtAsync(HttpClient client, UserLoginRequest loginRequest)

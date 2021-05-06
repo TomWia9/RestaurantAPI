@@ -4,7 +4,7 @@ using Infrastructure.Persistence;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class GenericRepository<T> : IGenericRepository<T> where T: class
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly RestaurantDbContext _context;
 
@@ -29,6 +29,5 @@ namespace Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
-
     }
 }

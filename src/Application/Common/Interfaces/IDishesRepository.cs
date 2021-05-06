@@ -11,6 +11,5 @@ namespace Application.Common.Interfaces
         Task<PagedList<Dish>> GetAllAsync(Guid restaurantId, DishesResourceParameters dishesResourceParameters);
         Task<Dish> GetAsync(Guid restaurantId, Guid id);
         Task<bool> RestaurantExists(Guid restaurantId);
-
     }
 }
