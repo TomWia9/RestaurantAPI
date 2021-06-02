@@ -8,6 +8,11 @@
         /// <summary>
         ///     Restaurant having delivery (true or false)
         /// </summary>
+
+        public string Name { get; set; }
+        public string City { get; set; }
+        public string Category { get; set; }
         public bool? HasDelivery { get; set; }
+
     }
 }

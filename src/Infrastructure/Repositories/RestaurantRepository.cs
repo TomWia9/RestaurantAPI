@@ -29,6 +29,15 @@ namespace Infrastructure.Repositories
             var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
 
             //filtering
+            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.Name))
+                collection = collection.Where(r => r.Name == restaurantsResourceParameters.Name);
+
+            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.City))
+                collection = collection.Where(r => r.Address.City == restaurantsResourceParameters.City);
+
+            if (!string.IsNullOrWhiteSpace(restaurantsResourceParameters.Category))
+                collection = collection.Where(r => r.Category == restaurantsResourceParameters.Category);
+
             if (restaurantsResourceParameters.HasDelivery != null)
                 collection = collection.Where(r => r.HasDelivery == restaurantsResourceParameters.HasDelivery);
 
