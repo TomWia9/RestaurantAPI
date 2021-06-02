@@ -40,6 +40,15 @@ namespace Api
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
             }).AddFluentValidation(options => { options.ValidatorOptions.LanguageManager.Enabled = false; });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AngularApp", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
+                        .AllowAnyMethod();;
+                });
+            });
+
             services.AddControllers();
             services.UseSwagger();
         }
@@ -71,6 +80,8 @@ namespace Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AngularApp");
 
             app.UseAuth();
 
