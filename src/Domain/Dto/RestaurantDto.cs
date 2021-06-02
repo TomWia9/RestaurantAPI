@@ -13,12 +13,12 @@ namespace Domain.Dto
         public Guid Id { get; set; }
 
         /// <summary>
-        ///     The description of the restaurant
+        ///     The name of the restaurant
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     The category of the restaurant
+        ///     The description of the restaurant
         /// </summary>
         public string Description { get; set; }
 
