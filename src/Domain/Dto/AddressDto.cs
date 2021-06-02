@@ -16,6 +16,12 @@
         public string Street { get; set; }
 
         /// <summary>
+        ///     The restaurant house number
+        /// </summary>
+        public string HouseNumber { get; set; }
+
+
+        /// <summary>
         ///     The restaurant post code
         /// </summary>
         public string PostalCode { get; set; }
