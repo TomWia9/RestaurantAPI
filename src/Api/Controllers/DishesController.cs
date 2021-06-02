@@ -16,6 +16,8 @@ using Newtonsoft.Json;
 
 namespace Api.Controllers
 {
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Authorize]
     [Route("api/Restaurants/{restaurantId}/[controller]")]
     [ApiController]

@@ -124,7 +124,8 @@ namespace Infrastructure.Persistence
                     Address = new Address
                     {
                         City = "Kraków",
-                        Street = "Długa 5",
+                        Street = "Długa",
+                        HouseNumber = "4A",
                         PostalCode = "30-001"
                     }
                 },
@@ -141,7 +142,8 @@ namespace Infrastructure.Persistence
                     Address = new Address
                     {
                         City = "Kraków",
-                        Street = "Szewska 2",
+                        Street = "Szewska",
+                        HouseNumber = "23E",
                         PostalCode = "30-001"
                     }
                 }

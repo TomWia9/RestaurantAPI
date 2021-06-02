@@ -15,7 +15,12 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(30);
 
             builder.Property(a => a.Street)
+                .IsRequired()
                 .HasMaxLength(50);
+
+            builder.Property(a => a.HouseNumber)
+                .IsRequired()
+                .HasMaxLength(5);
 
             builder.Property(a => a.PostalCode)
                 .IsRequired()

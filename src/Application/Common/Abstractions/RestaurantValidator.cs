@@ -16,7 +16,8 @@ namespace Application.Common.Abstractions
             RuleFor(r => r.ContactNumber).NotEmpty().Length(7, 16).PhoneNumber();
 
             RuleFor(r => r.Address.City).NotEmpty().Length(2, 30);
-            RuleFor(r => r.Address.Street).Length(2, 50);
+            RuleFor(r => r.Address.Street).NotEmpty().Length(2, 50);
+            RuleFor(r => r.Address.HouseNumber).NotEmpty().Length(1, 5);
             RuleFor(r => r.Address.PostalCode).NotEmpty().Length(5, 7).PostCode();
         }
     }

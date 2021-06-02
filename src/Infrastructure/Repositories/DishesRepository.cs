@@ -28,6 +28,9 @@ namespace Infrastructure.Repositories
             var collection = _context.Dishes.Where(d => d.RestaurantId == restaurantId);
 
             //filtering
+            if (!string.IsNullOrWhiteSpace(dishesResourceParameters.Name))
+                collection = collection.Where(d => d.Name == dishesResourceParameters.Name);
+
             if (dishesResourceParameters.MaximumPrice != null)
                 collection = collection.Where(d => d.Price <= dishesResourceParameters.MaximumPrice);
 
