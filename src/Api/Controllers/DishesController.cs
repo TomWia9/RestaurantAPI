@@ -48,7 +48,7 @@ namespace Api.Controllers
             var metadata = new
             {
                 result.TotalCount,
-                result.PagesSize,
+                result.PageSize,
                 result.CurrentPage,
                 result.TotalPages,
                 result.HasNext,
