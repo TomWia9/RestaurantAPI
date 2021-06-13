@@ -87,7 +87,8 @@ namespace IntegrationTests
                 {
                     City = "Test city",
                     PostalCode = "12-345",
-                    Street = "Test street"
+                    Street = "Test street",
+                    HouseNumber = "2"
                 }
             };
 
@@ -184,7 +185,9 @@ namespace IntegrationTests
                 {
                     City = "Updated city",
                     PostalCode = "12-345",
-                    Street = "Updated street"
+                    Street = "Updated street",
+                    HouseNumber = "2"
+
                 }
             };
 
