@@ -18,6 +18,7 @@ Other tools used in project:
 * **Open API** - for API documentation
 * **AutoMapper** - for mapping DTO-s and EntityModels data
 * **Fluent Validation** - for data validation
+* **xUnit** - for tests
 
 
 ## Installation
@@ -31,6 +32,11 @@ This will need to be perfored before running the application for the first time
 1. You have to change ConnectionString in **appsettings.Development.json** for ConnectionString that allow you to connect with database in your computer.
 2. Issue the Entity Framework command to update the database  
 `dotnet ef database update`
- 
+
+## Tests
+This project use integration tests provided by xUnit.  
+To run tests go to the root folder directory and do:  
+`dotnet test`
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
